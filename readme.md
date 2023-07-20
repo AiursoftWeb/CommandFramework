@@ -13,6 +13,38 @@ Aiursoft CommandFramework is a framework for building command line tools.
 
 With this framework, you can build a command line tool with just a few lines of code.
 
+Example project it built:
+
+* [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja)
+* [Parser](https://gitlab.aiursoft.cn/anduin/parser)
+* [HappyRecorder](https://gitlab.aiursoft.cn/anduin/happyrecorder)
+* [Dotlang](https://gitlab.aiursoft.cn/aiursoft/dotlang)
+
+```bash
+C:\workspace> ninja.exe
+
+Description:
+  Nuget Ninja, a tool for detecting dependencies of .NET projects.
+
+Usage:
+  Microsoft.NugetNinja [command] [options]
+
+Options:
+  -p, --path <path> (REQUIRED)   Path of the projects to be changed.
+  --nuget-server <nuget-server>  If you want to use a customized nuget server instead of the official nuget.org, 
+  --token <token>                The PAT token which has privilege to access the nuget server.
+  -d, --dry-run                  Preview changes without actually making them
+  -v, --verbose                  Show detailed log
+  -?, -h, --help                 Show help and usage information
+
+Commands:
+  all, all-officials  The command to run all officially supported features.
+  remove-deprecated   The command to replace all deprecated packages to new packages.
+  upgrade-pkg         The command to upgrade all package references to possible latest and avoid conflicts.
+  clean-pkg           The command to clean up possible useless package references.
+  clean-prj           The command to clean up possible useless project references.
+  ```
+
 ## Why this project?
 
 Command-line applications are a great way to automate repetitive tasks or even to be your own productivity tool. But building a command-line application in .NET is not easy. You need to parse the arguments, generate help pages, and so on. This project is designed to help you build a command-line application with just a few lines of code.
