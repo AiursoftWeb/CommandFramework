@@ -1,11 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<Version>6.0.0</Version>
+		<!--Nuget-->
+		<Company>Aiursoft</Company>
+		<Product>CommandFramework</Product>
+		<Authors>anduin</Authors>
+		<Description>Aiursoft CommandFramework is a framework for building command line tools.</Description>
+		<PackageTags>cli api framework parser</PackageTags>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://gitlab.aiursoft.cn/Aiursoft/CommandFramework.git</RepositoryUrl>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://gitlab.aiursoft.cn/Aiursoft/CommandFramework</PackageProjectUrl>
+	</PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
