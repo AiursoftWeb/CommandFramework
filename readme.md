@@ -62,7 +62,10 @@ dotnet add package Aiursoft.CommandFramework
 In your `YourProject.Core`, write an options provider:
 
 ```csharp
-namespace YourProject.Core
+using System.CommandLine;
+using Aiursoft.CommandFramework.Models;
+
+namespace YourProject.Core;
 
 public static class OptionsProvider
 {
@@ -88,6 +91,7 @@ Now you can write your executable:
 using System.CommandLine;
 using System.Reflection;
 using Aiursoft.CommandFramework.Extensions;
+
 
 namespace YourProject.Executable;
 
@@ -115,6 +119,8 @@ Now try to write a plugin:
 ```csharp
 using Aiursoft.CommandFramework.Abstracts;
 using Aiursoft.CommandFramework.Framework;
+using Aiursoft.CommandFramework.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace YourProject.Plugins.Calendar;
 
@@ -169,6 +175,15 @@ public class CalendarRenderer
     }
 }
 ```
+
+That's it!
+
+```bash
+$ yourapp calendar
+Hello world!
+```
+
+![running-demo](./demo/demo.png)
 
 ## Advanced Usage
 
