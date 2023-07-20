@@ -117,8 +117,10 @@ Yes, I know you need to write plugins for your executable!
 Now try to write a plugin:
 
 ```csharp
+using System.CommandLine;
 using Aiursoft.CommandFramework.Abstracts;
 using Aiursoft.CommandFramework.Framework;
+using Aiursoft.CommandFramework.Models;
 using Aiursoft.CommandFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 
