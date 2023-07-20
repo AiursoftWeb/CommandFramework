@@ -19,6 +19,7 @@ Example project it built:
 * [Parser](https://gitlab.aiursoft.cn/anduin/parser)
 * [HappyRecorder](https://gitlab.aiursoft.cn/anduin/happyrecorder)
 * [Dotlang](https://gitlab.aiursoft.cn/aiursoft/dotlang)
+* [NiBot](https://gitlab.aiursoft.cn/aiursoft/nibot)
 
 ```bash
 C:\workspace> ninja.exe
