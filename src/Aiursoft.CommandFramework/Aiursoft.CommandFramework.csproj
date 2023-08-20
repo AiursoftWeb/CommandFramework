@@ -1,25 +1,28 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<Version>6.0.0</Version>
-		<!--Nuget-->
-		<Company>Aiursoft</Company>
-		<Product>CommandFramework</Product>
-		<Authors>anduin</Authors>
-		<Description>Aiursoft CommandFramework is a framework for building command line tools.</Description>
-		<PackageTags>cli api framework parser</PackageTags>
-		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://gitlab.aiursoft.cn/Aiursoft/CommandFramework.git</RepositoryUrl>
-		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PackageProjectUrl>https://gitlab.aiursoft.cn/Aiursoft/CommandFramework</PackageProjectUrl>
-	</PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
-  </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <Version>6.0.0</Version>
+        <TargetFramework>net6.0</TargetFramework>
+        <AssemblyName>Aiursoft.CommandFramework</AssemblyName>
+        <RootNamespace>Aiursoft.CommandFramework</RootNamespace>
+        <IsTestProject>false</IsTestProject>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <IsPackable>true</IsPackable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Company>Aiursoft</Company>
+        <Product>CommandFramework</Product>
+        <Authors>anduin</Authors>
+        <Description>Aiursoft CommandFramework is a framework for building command line tools.</Description>
+        <PackageId>Aiursoft.CommandFramework</PackageId>
+        <PackageTags>cli api framework parser</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://gitlab.aiursoft.cn/Aiursoft/CommandFramework</PackageProjectUrl>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://gitlab.aiursoft.cn/Aiursoft/CommandFramework.git</RepositoryUrl>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
+        <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    </ItemGroup>
 </Project>
