@@ -225,77 +225,80 @@ Hello world!
 Of course, you can add more options to a specific command:
 
 ```csharp
-public class DownloadHandler : CommandHandler
+using Aiursoft.Dotlang.Core.Framework;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.CommandLine;
+using Aiursoft.CommandFramework.Framework;
+using Aiursoft.CommandFramework.Services;
+using Aiursoft.Dotlang.BingTranslate.Services;
+
+namespace Aiursoft.Dotlang.BingTranslate;
+
+public class TranslateHandler : CommandHandler
 {
-    private readonly Option<string> _url =
-        new(
-            aliases: new[] { "-u", "--url" },
-            description: "The target url to connect to download.")
-        {
-            IsRequired = true
-        };
-
-    private readonly Option<string> _savePath =
-        new(
-            new[] { "-f", "--file" },
-            getDefaultValue: () => string.Empty,
-            "The output file path to save the download result.");
-
-    private readonly Option<int> _threads =
-        new(
-            new[] { "-t", "--threads" },
-            getDefaultValue: () => 16,
-            "How many threads to connect to download.");
-
-    private readonly Option<int> _blockSize =
-        new(
-            new[] { "-b", "--block-size" },
-            getDefaultValue: () => 4 * 1024 * 1024,
-            "The size of block. Default is 4MB. For example, for 100MB file, it will be split to 25 blocks to download in parallel.");
-
-
-    public override string Name => "download";
-
-    public override string Description => "Download an HTTP Url.";
-
-    public override Option[] GetCommandOptions() => new Option[]
+    private readonly Option<string> _bingApiKey = new(
+        aliases: new[] { "--key", "-k" },
+        description: "The Bing API Key.")
     {
-        _url,
-        _savePath,
-        _threads,
-        _blockSize
+        IsRequired = true
     };
+
+    private readonly Option<string> _targetLang = new(
+        aliases: new[] { "--language", "-l" },
+        description: "The target language code. For example: zh, en, ja")
+    {
+        IsRequired = true
+    };
+
+    public override string Name => "translate";
+
+    public override string Description => "The command to start translation based on Bing Translate.";
+
+    public override Option[] GetCommandOptions()
+    {
+        return new Option[]
+        {
+            _bingApiKey,
+            _targetLang
+        };
+    }
 
     public override void OnCommandBuilt(Command command)
     {
         command.SetHandler(
-            Execute,
-            CommonOptionsProvider.VerboseOption,
-            CommonOptionsProvider.DryRunOption,
-            _url,
-            _savePath,
-            _threads,
-            _blockSize);
+            ExecuteOverride,
+            OptionsProvider.PathOptions,
+            OptionsProvider.DryRunOption,
+            OptionsProvider.VerboseOption,
+            _bingApiKey,
+            _targetLang);
     }
 
-    private async Task Execute(bool verbose, bool dryRun, string url, string savePath, int threads, int blockSize)
+    private Task ExecuteOverride(string path, bool dryRun, bool verbose, string key, string targetLang)
     {
-        var host = ServiceBuilder
-            .BuildHost<Startup>(verbose)
-            .Build();
+        var hostBuilder = ServiceBuilder.BuildHost<StartUp>(verbose);
 
-        await host.StartAsync();
-        
-        var downloader = host.Services.GetRequiredService<Downloader>();
-        await downloader.DownloadAsync(url, savePath, blockSize, threads);
+        hostBuilder.ConfigureServices(services =>
+        {
+            services.AddSingleton(new TranslateOptions { APIKey = key, TargetLanguage = targetLang });
+        });
+
+        var entry = hostBuilder
+            .Build()
+            .Services
+            .GetRequiredService<TranslateEntry>();
+
+        return entry.OnServiceStartedAsync(path, !dryRun);
     }
 }
+
 ```
 
 Now you have more options to use:
 
 ```bash
-$ yourapp download -u https://www.aiursoft.cn -f aiursoft.html -t 32 -b 1024
+$ yourapp translate --key AB123 --language zh-CN
 ```
 
 ## How to contribute
