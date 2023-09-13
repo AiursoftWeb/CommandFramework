@@ -1,15 +1,21 @@
 ﻿using Aiursoft.CommandFramework.Abstracts;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Aiursoft.CommandFramework.Services;
 
 public static class ServiceBuilder
 {
-    public static ServiceCollection BuildServices<T>(bool verbose) where T : IStartUp, new()
+    public static IHostBuilder BuildHost<T>(bool verbose) where T : IStartUp, new()
     {
-        var services = new ServiceCollection();
-        services.AddLogging(logging =>
+        var hostBuilder = new HostBuilder();
+        hostBuilder.ConfigureServices(services =>
+        {
+            var startUp = new T();
+            startUp.ConfigureServices(services);
+        });
+
+        hostBuilder.ConfigureLogging(logging =>
         {
             logging
                 .AddFilter("Microsoft.Extensions", LogLevel.Warning)
@@ -24,9 +30,7 @@ public static class ServiceBuilder
 
             logging.SetMinimumLevel(verbose ? LogLevel.Trace : LogLevel.Information);
         });
-
-        var startUp = new T();
-        startUp.ConfigureServices(services);
-        return services;
+        
+        return hostBuilder;
     }
 }
