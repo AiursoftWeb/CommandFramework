@@ -61,57 +61,23 @@ dotnet add package Aiursoft.CommandFramework
 
 ![diagram](./demo/diagram.png)
 
-In your `YourProject.Core`, write an options provider:
+In your `YourProject.ExecutableCli`, write the program entry like this:
 
 ```csharp
-using System.CommandLine;
-using Aiursoft.CommandFramework.Models;
-
-namespace YourProject.Core;
-
-public static class OptionsProvider
-{
-    public static RootCommand AddGlobalOptions(this RootCommand command)
-    {
-        var options = new Option[]
-        {
-            CommonOptionsProvider.DryRunOption,
-            CommonOptionsProvider.VerboseOption
-        };
-        foreach (var option in options)
-        {
-            command.AddGlobalOption(option);
-        }
-        return command;
-    }
-}
-```
-
-Now you can write your executable:
-
-```csharp
-using System.CommandLine;
-using System.Reflection;
+// Program.cs
+using Anduin.Parser.Core.Framework;
+using Anduin.Parser.FFmpeg;
+using Aiursoft.CommandFramework;
 using Aiursoft.CommandFramework.Extensions;
 
-
-namespace YourProject.Executable;
-
-public class Program
-{
-    public static async Task Main(string[] args)
+return await new AiursoftCommand()
+    .Configure(command =>
     {
-        var descriptionAttribute = (Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly()).GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description;
-
-        var program = new RootCommand(descriptionAttribute ?? "Unknown usage.")
+        command
             .AddGlobalOptions()
-            .AddPlugins(
-                new CalendarPlugin()
-            );
-
-        await program.InvokeAsync(args);
-    }
-}
+            .AddPlugins(new CalendarPlugin());
+    })
+    .RunAsync(args);
 ```
 
 Yes, I know you need to write plugins for your executable!
@@ -148,7 +114,8 @@ public class CalendarHandler : CommandHandler
 
     public override void OnCommandBuilt(Command command)
     {
-        command.SetHandler(Execute, CommonOptionsProvider.VerboseOption);
+        command.SetHandler(
+            Execute, CommonOptionsProvider.VerboseOption);
     }
 
     private async Task Execute(bool verbose)
@@ -187,8 +154,6 @@ That's it!
 $ yourapp calendar
 Hello world!
 ```
-
-![running-demo](./demo/demo.png)
 
 ## Advanced Usage - Nested Command Handler
 
@@ -267,7 +232,7 @@ public class TranslateHandler : CommandHandler
     public override void OnCommandBuilt(Command command)
     {
         command.SetHandler(
-            ExecuteOverride,
+            Execute,
             OptionsProvider.PathOptions,
             OptionsProvider.DryRunOption,
             OptionsProvider.VerboseOption,
@@ -275,13 +240,17 @@ public class TranslateHandler : CommandHandler
             _targetLang);
     }
 
-    private Task ExecuteOverride(string path, bool dryRun, bool verbose, string key, string targetLang)
+    private Task Execute(string path, bool dryRun, bool verbose, string key, string targetLang)
     {
         var hostBuilder = ServiceBuilder.BuildHost<StartUp>(verbose);
 
         hostBuilder.ConfigureServices(services =>
         {
-            services.AddSingleton(new TranslateOptions { APIKey = key, TargetLanguage = targetLang });
+            services.AddSingleton(new TranslateOptions
+            { 
+                APIKey = key, 
+                TargetLanguage = targetLang 
+            });
         });
 
         var entry = hostBuilder
