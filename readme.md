@@ -287,6 +287,8 @@ Now you have more options to use:
 $ yourapp translate --key AB123 --language zh-CN
 ```
 
+If you want to explorer a real project built with this framework, please check [Parser](https://gitlab.aiursoft.cn/anduin/parser) as an example.
+
 ## How to contribute
 
 There are many ways to contribute to the project: logging bugs, submitting pull requests, reporting issues, and creating suggestions.
