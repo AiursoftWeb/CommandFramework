@@ -59,7 +59,18 @@ Run the following command to install `Aiursoft.CommandFramework` to your project
 dotnet add package Aiursoft.CommandFramework
 ```
 
-![diagram](./demo/diagram.png)
+Suggested project dependency tree (This will make your executable cli easy to be extended by plugins.):
+
+```mermaid
+stateDiagram-v2
+    YourProject.Executable.Cli --> YourProject.Plugin.A
+    YourProject.Executable.Cli --> YourProject.Plugin.B
+    YourProject.Executable.Cli --> YourProject.Plugin.C
+    YourProject.Plugin.A --> YourProject.Shared
+    YourProject.Plugin.B --> YourProject.Shared
+    YourProject.Plugin.C --> YourProject.Shared
+    YourProject.Shared --> Aiursoft.CommandFramework
+```
 
 First, write a simple class to provide options to your command:
 
@@ -89,7 +100,6 @@ In your `YourProject.ExecutableCli`, write the program entry like this:
 
 ```csharp
 // Program.cs
-using Anduin.Parser.Core.Framework;
 using Aiursoft.CommandFramework;
 using Aiursoft.CommandFramework.Extensions;
 
