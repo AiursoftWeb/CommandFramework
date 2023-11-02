@@ -6,17 +6,17 @@ namespace Aiursoft.CommandFramework.Tests;
 [TestClass]
 public class IntegrationTests
 {
-    private readonly AiursoftCommand _command;
+    private readonly AiursoftCommand _program;
 
     public IntegrationTests()
     {
-        _command = new AiursoftCommand().Configure(command => command.AddGlobalOptions().AddPlugins());
+        _program = new AiursoftCommand().Configure(command => command.AddGlobalOptions().AddPlugins());
     }
 
     [TestMethod]
     public async Task InvokeHelp()
     {
-        var result = await _command.TestRunAsync(new[] { "--help" });
+        var result = await _program.TestRunAsync(new[] { "--help" });
 
         Assert.AreEqual(0, result.ProgramReturn);
         Assert.IsTrue(result.Output.Contains("Options:"));
@@ -26,21 +26,21 @@ public class IntegrationTests
     [TestMethod]
     public async Task InvokeVersion()
     {
-        var result = await _command.TestRunAsync(new[] { "--version" });
+        var result = await _program.TestRunAsync(new[] { "--version" });
         Assert.AreEqual(0, result.ProgramReturn);
     }
 
     [TestMethod]
     public async Task InvokeUnknown()
     {
-        var result = await _command.TestRunAsync(new[] { "--wtf" });
+        var result = await _program.TestRunAsync(new[] { "--wtf" });
         Assert.AreEqual(1, result.ProgramReturn);
     }
 
     [TestMethod]
     public async Task InvokeWithoutArg()
     {
-        var result = await _command.TestRunAsync(Array.Empty<string>());
+        var result = await _program.TestRunAsync(Array.Empty<string>());
         Assert.AreEqual(0, result.ProgramReturn);
     }
 }
