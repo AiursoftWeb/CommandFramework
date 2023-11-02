@@ -1,4 +1,5 @@
-﻿using System.CommandLine;
+using System.CommandLine;
+using System.CommandLine.IO;
 using Aiursoft.CommandFramework.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,8 +20,15 @@ public class IntegrationTests
     [TestMethod]
     public async Task InvokeHelp()
     {
-        var result = await _program.InvokeAsync(new[] { "--help" });
+        var console = new TestConsole();
+        var result = await _program.InvokeAsync(new[] { "--help" }, console);
+
+        var output = console.Out.ToString();
+        var errors = console.Error.ToString();
+
         Assert.AreEqual(0, result);
+        Assert.IsTrue(output.Contains(" "));
+        Assert.IsTrue(string.IsNullOrWhiteSpace(errors));
     }
 
     [TestMethod]
