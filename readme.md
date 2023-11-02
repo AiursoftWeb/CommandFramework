@@ -61,6 +61,30 @@ dotnet add package Aiursoft.CommandFramework
 
 ![diagram](./demo/diagram.png)
 
+First, write a simple class to provide options to your command:
+
+```csharp
+using System.CommandLine;
+using Aiursoft.CommandFramework.Models;
+
+public static class OptionsProvider
+{
+    public static RootCommand AddGlobalOptions(this RootCommand command)
+    {
+        var options = new Option[]
+        {
+            CommonOptionsProvider.DryRunOption,
+            CommonOptionsProvider.VerboseOption
+        };
+        foreach (var option in options)
+        {
+            command.AddGlobalOption(option);
+        }
+        return command;
+    }
+}
+```
+
 In your `YourProject.ExecutableCli`, write the program entry like this:
 
 ```csharp

@@ -1,5 +1,4 @@
 using Aiursoft.CommandFramework.Extensions;
-using Anduin.HappyRecorder.PluginFramework.Services.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aiursoft.CommandFramework.Tests;
