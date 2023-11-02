@@ -115,8 +115,6 @@ using Aiursoft.CommandFramework.Models;
 using Aiursoft.CommandFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace YourProject.Plugins.Calendar;
-
 public class CalendarPlugin : IPlugin
 {
     public CommandHandler[] Install()
@@ -213,15 +211,11 @@ Hello world!
 Of course, you can add more options to a specific command:
 
 ```csharp
-using Aiursoft.Dotlang.Core.Framework;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.CommandLine;
 using Aiursoft.CommandFramework.Framework;
 using Aiursoft.CommandFramework.Services;
-using Aiursoft.Dotlang.BingTranslate.Services;
-
-namespace Aiursoft.Dotlang.BingTranslate;
 
 public class TranslateHandler : CommandHandler
 {
