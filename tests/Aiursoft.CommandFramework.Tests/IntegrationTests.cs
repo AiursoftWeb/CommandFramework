@@ -1,54 +1,47 @@
-using System.CommandLine;
-using System.CommandLine.IO;
 using Aiursoft.CommandFramework.Extensions;
+using Anduin.HappyRecorder.PluginFramework.Services.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Anduin.HappyRecorder.PluginFramework.Services.Tests;
+namespace Aiursoft.CommandFramework.Tests;
 
 [TestClass]
 public class IntegrationTests
 {
-    private readonly RootCommand _program;
+    private readonly AiursoftCommand _command;
 
     public IntegrationTests()
     {
-        _program = new RootCommand("Test env.")
-            .AddGlobalOptions()
-            .AddPlugins();
+        _command = new AiursoftCommand().Configure(command => command.AddGlobalOptions().AddPlugins());
     }
 
     [TestMethod]
     public async Task InvokeHelp()
     {
-        var console = new TestConsole();
-        var result = await _program.InvokeAsync(new[] { "--help" }, console);
+        var result = await _command.TestRunAsync(new[] { "--help" });
 
-        var output = console.Out.ToString();
-        var errors = console.Error.ToString();
-
-        Assert.AreEqual(0, result);
-        Assert.IsTrue(output.Contains(" "));
-        Assert.IsTrue(string.IsNullOrWhiteSpace(errors));
+        Assert.AreEqual(0, result.ProgramReturn);
+        Assert.IsTrue(result.Output.Contains("Options:"));
+        Assert.IsTrue(string.IsNullOrWhiteSpace(result.Error));
     }
 
     [TestMethod]
     public async Task InvokeVersion()
     {
-        var result = await _program.InvokeAsync(new[] { "--version" });
-        Assert.AreEqual(0, result);
+        var result = await _command.TestRunAsync(new[] { "--version" });
+        Assert.AreEqual(0, result.ProgramReturn);
     }
 
     [TestMethod]
     public async Task InvokeUnknown()
     {
-        var result = await _program.InvokeAsync(new[] { "--wtf" });
-        Assert.AreEqual(1, result);
+        var result = await _command.TestRunAsync(new[] { "--wtf" });
+        Assert.AreEqual(1, result.ProgramReturn);
     }
 
     [TestMethod]
     public async Task InvokeWithoutArg()
     {
-        var result = await _program.InvokeAsync(Array.Empty<string>());
-        Assert.AreEqual(0, result);
+        var result = await _command.TestRunAsync(Array.Empty<string>());
+        Assert.AreEqual(0, result.ProgramReturn);
     }
 }
