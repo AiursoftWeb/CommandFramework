@@ -186,7 +186,7 @@ $ yourapp calendar
 Hello world!
 ```
 
-## Advanced Usage - Nested Command Handler
+## Advanced Usage 1 - Nested Command Handler
 
 Of course, handlers can be nested:
 
@@ -216,7 +216,7 @@ $ yourapp get calendar
 Hello world!
 ```
 
-## Advanced Usage - More options
+## Advanced Usage 2 - More options
 
 Of course, you can add more options to a specific command:
 
@@ -296,6 +296,68 @@ Now you have more options to use:
 ```bash
 $ yourapp translate --key AB123 --language zh-CN
 ```
+
+## Advanced Usage 3 - Write tests
+
+If you want to write tests for your command line tool, you can use `TestRunAsync` method to invoke your command:
+
+```csharp
+using Aiursoft.CommandFramework;
+using Aiursoft.CommandFramework.Extensions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+[TestClass]
+public class IntegrationTests
+{
+    private readonly AiursoftCommand _program;
+
+    public IntegrationTests()
+    {
+        _program = new AiursoftCommand()
+            .Configure(command =>
+            {
+                command
+                    .AddGlobalOptions()
+                    .AddPlugins(
+                        // Your plugins
+                    );
+            });
+    }
+
+    [TestMethod]
+    public async Task InvokeHelp()
+    {
+        var result = await _command.TestRunAsync(new[] { "--help" });
+
+        Assert.AreEqual(0, result.ProgramReturn);
+        Assert.IsTrue(result.Output.Contains("Options:"));
+        Assert.IsTrue(string.IsNullOrWhiteSpace(result.Error));
+    }
+
+    [TestMethod]
+    public async Task InvokeVersion()
+    {
+        var result = await _program.TestRunAsync(new[] { "--version" });
+        Assert.AreEqual(0, result.ProgramReturn);
+    }
+
+    [TestMethod]
+    public async Task InvokeUnknown()
+    {
+        var result = await _program.TestRunAsync(new[] { "--wtf" });
+        Assert.AreEqual(1, result.ProgramReturn);
+    }
+
+    [TestMethod]
+    public async Task InvokeWithoutArg()
+    {
+        var result = await _program.TestRunAsync(Array.Empty<string>());
+        Assert.AreEqual(1, result.ProgramReturn);
+    }
+}
+```
+
+## Download real sample project
 
 If you want to explorer a real project built with this framework, please check [Parser](https://gitlab.aiursoft.cn/anduin/parser) as an example.
 
