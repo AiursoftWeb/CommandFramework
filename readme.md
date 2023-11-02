@@ -327,7 +327,7 @@ public class IntegrationTests
     [TestMethod]
     public async Task InvokeHelp()
     {
-        var result = await _command.TestRunAsync(new[] { "--help" });
+        var result = await _program.TestRunAsync(new[] { "--help" });
 
         Assert.AreEqual(0, result.ProgramReturn);
         Assert.IsTrue(result.Output.Contains("Options:"));
