@@ -66,7 +66,6 @@ In your `YourProject.ExecutableCli`, write the program entry like this:
 ```csharp
 // Program.cs
 using Anduin.Parser.Core.Framework;
-using Anduin.Parser.FFmpeg;
 using Aiursoft.CommandFramework;
 using Aiursoft.CommandFramework.Extensions;
 
