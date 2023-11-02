@@ -24,10 +24,11 @@ public class IntegrationTests
         var result = await _program.InvokeAsync(new[] { "--help" }, console);
 
         var output = console.Out.ToString();
-        var errors = console.Err.ToString();
+        var errors = console.Error.ToString();
 
         Assert.AreEqual(0, result);
         Assert.IsTrue(output.Contains(" "));
+        Assert.IsTrue(string.IsNullOrWhiteSpace(errors));
     }
 
     [TestMethod]
