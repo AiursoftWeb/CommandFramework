@@ -21,6 +21,7 @@ Example project it built:
 * [HappyRecorder](https://gitlab.aiursoft.cn/anduin/happyrecorder)
 * [Dotlang](https://gitlab.aiursoft.cn/aiursoft/dotlang)
 * [Ni Bot](https://gitlab.aiursoft.cn/aiursoft/ni-bot)
+* [IPMI Controller](https://gitlab.aiursoft.cn/aiursoft/ipmicontroller)
 
 ```bash
 C:\workspace> ninja.exe
