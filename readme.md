@@ -274,17 +274,17 @@ public class TranslateHandler : CommandHandler
 
         hostBuilder.ConfigureServices(services =>
         {
-            services.AddSingleton(new TranslateOptions
-            { 
-                APIKey = key, 
-                TargetLanguage = targetLang 
+            services.Configure<TranslateOptions>(options =>
+            {
+                options.BingApiKey = key;
+                options.TargetLang = targetLang;
             });
         });
 
         var entry = hostBuilder
             .Build()
             .Services
-            .GetRequiredService<TranslateEntry>();
+            .GetRequiredService<TranslateEntry>(); // TranslateEntry is a class that injects 'IOptions<TranslateOptions>'.
 
         return entry.OnServiceStartedAsync(path, !dryRun);
     }
@@ -358,9 +358,9 @@ public class IntegrationTests
 }
 ```
 
-## Download real sample project
+## Download a real sample project
 
-If you want to explorer a real project built with this framework, please check [Parser](https://gitlab.aiursoft.cn/anduin/parser) as an example.
+If you want to explore a real project built with this framework, please check [Parser](https://gitlab.aiursoft.cn/anduin/parser) as an example.
 
 ## How to contribute
 
