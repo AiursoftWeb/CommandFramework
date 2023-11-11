@@ -6,9 +6,9 @@ namespace Aiursoft.CommandFramework.Services;
 
 public static class ServiceBuilder
 {
-    public static IHostBuilder BuildHost<T>(bool verbose) where T : IStartUp, new()
+    public static IHostBuilder CreateCommandHostBuilder<T>(bool verbose) where T : IStartUp, new()
     {
-        var hostBuilder = new HostBuilder();
+        var hostBuilder = Host.CreateDefaultBuilder();
         hostBuilder.ConfigureServices(services =>
         {
             var startUp = new T();
@@ -30,6 +30,8 @@ public static class ServiceBuilder
 
             logging.SetMinimumLevel(verbose ? LogLevel.Trace : LogLevel.Information);
         });
+        
+        hostBuilder.UseConsoleLifetime();
         
         return hostBuilder;
     }

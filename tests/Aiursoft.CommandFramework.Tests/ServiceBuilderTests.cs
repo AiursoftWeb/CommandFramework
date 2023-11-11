@@ -11,7 +11,7 @@ public class ServiceBuilderTests
     [TestMethod]
     public void TestServiceBuilder()
     {
-        var hostBuilder = ServiceBuilder.BuildHost<TestStartUp>(true);
+        var hostBuilder = ServiceBuilder.CreateCommandHostBuilder<TestStartUp>(true);
         var host = hostBuilder.Build();
         Assert.IsNotNull(hostBuilder);
         Assert.IsNotNull(host);
