@@ -66,7 +66,7 @@ Commands:
 
 Command-line applications are a great way to automate repetitive tasks or even to be your own productivity tool. But building a command-line application in .NET is not easy. You need to parse the arguments, generate help pages, and so on. This project is designed to help you build a command-line application with just a few lines of code.
 
-## How to use
+## How to install
 
 Run the following command to install `Aiursoft.CommandFramework` to your project from [nuget.org](https://www.nuget.org/packages/Aiursoft.CommandFramework/):
 
@@ -74,12 +74,118 @@ Run the following command to install `Aiursoft.CommandFramework` to your project
 dotnet add package Aiursoft.CommandFramework
 ```
 
-To use it, you need to decide between:
+## Learn step 1: How to build an executable command handler?
 
-* [Single command app](./docs/single_command.md)
-* [Nested command app](./docs/nested_commands.md)
+In `Aiursoft.CommandFramework`, a command handler is a class that can be executed as a command.
 
-A single command app is a command line tool that only has one command.
+To build an executable command, you can do:
+
+```csharp
+public class DownloadHandler : ExecutableCommandHandlerBuilder
+{
+    public static readonly Option<string> Url =
+        new(
+            aliases: new[] { "-u", "--url" },
+            description: "The target url to download.")
+        {
+            IsRequired = true
+        };
+
+    public override string Name => "download";
+
+    public override string Description => "Download an HTTP Url.";
+    
+    public override Option[] GetCommandOptions() => new Option[]
+    {
+        // Configure your options here.
+
+        CommonOptionsProvider.VerboseOption,
+        DownloadHandler.Url // Your own options.
+    };
+
+    protected override async Task Execute(InvocationContext context)
+    {
+        // Your code entry:
+
+        var verbose = context.ParseResult.GetValueForOption(CommonOptionsProvider.VerboseOption);
+        var url = context.ParseResult.GetValueForOption(DownloadHandler.Url)!;
+
+        Console.WriteLine($"Downloading file from: {url}...");
+        var client = new HttpClient();
+        var response = await client.GetAsync(url);
+        var content = await response.Content.ReadAsStringAsync();
+        Console.WriteLine(content);
+    }
+}
+```
+
+Now you can start your app! Finish your `Program.cs` entry code!
+
+```csharp
+public class Program
+{
+    public static async Task Main(string[] args)
+    {
+      return await new DownloadHandler().RunAsync(args, defaultOption: OptionsProvider.Url);
+    }
+}
+```
+
+Build and run you app!
+
+```bash
+$ your-downloader.exe --url https://www.aiursoft.cn
+# or
+$ your-downloader.exe https://www.aiursoft.cn
+# outputs:
+Downloading file from: https://www.aiursoft.cn...
+```
+
+## Learn step 2: How to test your command handler?
+
+It it super simple to test a command handler:
+
+```csharp
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+[TestClass]
+public class IntegrationTests
+{
+    private readonly DownloadHandler _program = new();
+
+    [TestMethod]
+    public async Task InvokeHelp()
+    {
+        var result = await _program.TestRunAsync(new[] { "--help" });
+        Assert.AreEqual(0, result.ProgramReturn);
+    }
+
+    [TestMethod]
+    public async Task InvokeVersion()
+    {
+        var result = await _program.TestRunAsync(new[] { "--version" });
+        Assert.AreEqual(0, result.ProgramReturn);
+    }
+
+    [TestMethod]
+    public async Task InvokeUnknown()
+    {
+        var result = await _program.TestRunAsync(new[] { "--wtf" });
+        Assert.AreEqual(1, result.ProgramReturn);
+    }
+}
+```
+
+Now write you UT, you can follow this practice:
+
+* Prepare some environment
+* Run your command handler
+* Assert the result
+* Clean up the environment
+
+## Learn step 3: Understand single command app and nested command app
+
+In the previous steps, we have learned how to build a single command app. A single command app is a command line tool that only has one command.
 
 This is useful for something with limited function, like:
 
@@ -87,15 +193,236 @@ This is useful for something with limited function, like:
 * File download tool
 * Web server tool
 
+But in more scenarios, we usually need a command line tool with multiple commands. For example, `git` has many commands like `git clone`, `git commit`, `git push`, etc.
+
 A nested command app is a command line tool that has multiple commands. like:
 
 * [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja)
 
-Select the scenario you want to use and follow the instructions.
+## Learn step 4: How to build a nested command app?
 
-## Download a real sample project
+To do that, first you need to build several executable command handlers. And then wrap them with a `NavigationCommandHandlerBuilder`:
 
-If you want to explore a real project built with this framework, please check [Happy Recorder](https://gitlab.aiursoft.cn/anduin/HappyRecorder) as an example.
+```csharp
+public class ConfigHandler : NavigationCommandHandlerBuilder
+{
+    public override string Name => "config";
+
+    public override string Description => "Configuration management.";
+
+    public override CommandHandlerBuilder[] GetSubCommandHandlers()
+    {
+        return new CommandHandlerBuilder[]
+        {
+            new GetDbLocationHandler(), // Where the `GetDbLocationHandler` is an `ExecutableCommandHandlerBuilder`.
+            new SetDbLocationHandler()  // Where the `SetDbLocationHandler` is an `ExecutableCommandHandlerBuilder`.
+        };
+    }
+}
+```
+
+And it's a little different to run a nested command app:
+
+```csharp
+// Program.cs of the nested command app.
+return await new AiursoftCommandApp()
+    .Configure(command =>
+    {
+        command
+            .AddGlobalOptions()
+            .AddPlugins(
+                new CalendarPlugin() // One app can have multiple plugins.
+            );
+    })
+    .RunAsync(args);
+
+// This is a plugin for your app
+public class CalendarPlugin : IPlugin
+{
+    public ICommandHandlerBuilder[] Install() // One plugin can provide multiple command handlers.
+    {
+        return new ICommandHandlerBuilder[] // Both `NavigationCommandHandlerBuilder` and `ExecutableCommandHandlerBuilder` can be registered.
+        {
+            new ConfigHandler() // Where the `ConfigHandler` is a `NavigationCommandHandlerBuilder`.
+        };
+    }
+}
+
+// Your app may have some global options. So you can write a global options provider.
+public static class OptionsProvider
+{
+    public static Command AddGlobalOptions(this Command command)
+    {
+        var options = new Option[]
+        {
+            CommonOptionsProvider.DryRunOption,
+            CommonOptionsProvider.VerboseOption
+        };
+        foreach (var option in options)
+        {
+            command.AddGlobalOption(option);
+        }
+        return command;
+    }
+}
+```
+
+Now you can try:
+
+```bash
+your-app config get-db-location
+```
+
+## Learn step 5: How to test a nested command app?
+
+It's also simple to test a nested command app:
+
+```csharp
+[TestClass]
+public class IntegrationTests
+{
+    private readonly AiursoftCommandApp _program;
+
+    public IntegrationTests()
+    {
+        _program = new AiursoftCommandApp()
+            .Configure(command =>
+            {
+                command
+                    .AddGlobalOptions()
+                    .AddPlugins(
+                        new CalendarPlugin()
+                    );
+            });
+    }
+
+    [TestMethod]
+    public async Task InvokeHelp()
+    {
+        var result = await _program.TestRunAsync(new[] { "--help" });
+        Assert.AreEqual(0, result.ProgramReturn);
+    }
+
+    [TestMethod]
+    public async Task InvokeVersion()
+    {
+        var result = await _program.TestRunAsync(new[] { "--version" });
+        Assert.AreEqual(0, result.ProgramReturn);
+    }
+
+    [TestMethod]
+    public async Task InvokeUnknown()
+    {
+        var result = await _program.TestRunAsync(new[] { "--wtf" });
+        Assert.AreEqual(1, result.ProgramReturn);
+    }
+
+    [TestMethod]
+    public async Task InvokeWithoutArg()
+    {
+        var result = await _program.TestRunAsync(Array.Empty<string>());
+        Assert.AreEqual(1, result.ProgramReturn);
+    }
+}
+```
+
+## Learn step 6: How to build a command app with dependency injection?
+
+It's easy to build a command app with dependency injection.
+
+Of course, you need to register your services in your `Startup` class first:
+
+```csharp
+using Aiursoft.CommandFramework.Abstracts;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Aiursoft.DotDownload.Http;
+
+public class Startup : IStartUp
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddHttpClient(nameof(Downloader)).ConfigurePrimaryHttpMessageHandler(() => 
+        {
+            return new HttpClientHandler()
+            {
+                AllowAutoRedirect = true,
+            };
+        });
+        services.AddTransient<Downloader>();
+    }
+}
+```
+
+Then in your `Execute(InvocationContext context)` function:
+
+```csharp
+// This code is inside an `ExecutableCommandHandlerBuilder`.
+
+protected override async Task Execute(InvocationContext context)
+{
+  var host = ServiceBuilder
+            .CreateCommandHostBuilder<Startup>(verbose) // Your own startup class.
+            .Build();
+
+  var downloader = host.Services.GetRequiredService<Downloader>(); // Get a service from dependency injection
+  await downloader.DownloadWithWatchAsync(url, savePath, blockSize, threads, showProgressBar: !verbose);
+}
+```
+
+That's it! You can even start a background service in your command line tool!
+
+```csharp
+
+public class Startup : IStartUp
+{
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddTransient<ServerInitializer>();
+        services.AddSingleton<IHostedService, ServerMonitor>();
+    }
+}
+
+// In your `ExecutableCommandHandlerBuilder`:
+protected override async Task Execute(InvocationContext context)
+{
+    var verbose = context.ParseResult.GetValueForOption(CommonOptionsProvider.VerboseOption);
+    var profile = context.ParseResult.GetValueForOption(_profile);
+    
+    var host = ServiceBuilder
+        .CreateCommandHostBuilder<Startup>(verbose)
+        .ConfigureServices((hostBuilderContext , services)=>
+        {
+            services.Configure<ProfileConfig>(config =>
+            {
+                config.Profile = profile;
+            });
+        })
+        .Build();
+
+    await host.StartAsync(); // Now your background service is running!
+    await host.WaitForShutdownAsync();
+}
+```
+
+To read more about how to write an `IHostedService`, please read [this doc](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services) from Microsoft.
+
+## Learn step 8: Read more examples
+
+If you want to explore a real project built with this framework, please download the following project:
+
+Single command app:
+
+* [DotDownload](https://gitlab.aiursoft.cn/aiursoft/dotdownload) as an example.
+* [Httping](https://gitlab.aiursoft.cn/aiursoft/httping) as an example.
+
+Nested command app:
+
+* [Happy Recorder](https://gitlab.aiursoft.cn/anduin/HappyRecorder) as an example.
+
+Background service:
+
+* [IPMI Controller](https://gitlab.aiursoft.cn/aiursoft/ipmicontroller) as an example.
 
 ## More doc
 
