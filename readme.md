@@ -20,12 +20,21 @@ With this framework, you can build a command line tool with just a few lines of 
 
 Example project it built:
 
+Nested command app:
+
 * [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja)
+* [HappyRecorder](https://gitlab.aiursoft.cn/anduin/happyrecorder)
+
+Single command app:
+
+* [Static](https://gitlab.aiursoft.cn/aiursoft/static)
+* [Httping](https://gitlab.aiursoft.cn/aiursoft/httping)
 * [DotDownload](https://gitlab.aiursoft.cn/aiursoft/dotdownload)
 * [Parser](https://gitlab.aiursoft.cn/anduin/parser)
-* [HappyRecorder](https://gitlab.aiursoft.cn/anduin/happyrecorder)
 * [Dotlang](https://gitlab.aiursoft.cn/aiursoft/dotlang)
-* [Httping](https://gitlab.aiursoft.cn/aiursoft/httping)
+
+Background service:
+
 * [IPMI Controller](https://gitlab.aiursoft.cn/aiursoft/ipmicontroller)
 
 ```bash
@@ -57,14 +66,32 @@ Commands:
 
 Command-line applications are a great way to automate repetitive tasks or even to be your own productivity tool. But building a command-line application in .NET is not easy. You need to parse the arguments, generate help pages, and so on. This project is designed to help you build a command-line application with just a few lines of code.
 
-## Installation
+## How to use
 
 Run the following command to install `Aiursoft.CommandFramework` to your project from [nuget.org](https://www.nuget.org/packages/Aiursoft.CommandFramework/):
+
+```bash
+dotnet add package Aiursoft.CommandFramework
+```
 
 To use it, you need to decide between:
 
 * [Single command app](./docs/single_command.md)
 * [Nested command app](./docs/nested_commands.md)
+
+A single command app is a command line tool that only has one command.
+
+This is useful for something with limited function, like:
+
+* Ping tool
+* File download tool
+* Web server tool
+
+A nested command app is a command line tool that has multiple commands. like:
+
+* [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja)
+
+Select the scenario you want to use and follow the instructions.
 
 ## Download a real sample project
 
