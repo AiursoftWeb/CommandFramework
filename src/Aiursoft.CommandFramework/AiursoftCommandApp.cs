@@ -7,11 +7,11 @@ using Aiursoft.CommandFramework.Models;
 
 namespace Aiursoft.CommandFramework;
 
-public class AiursoftCommand
+public class AiursoftCommandApp
 {
-    private readonly RootCommand _rootCommand;
+    private readonly Command _rootCommand;
 
-    public AiursoftCommand(RootCommand? command = null)
+    public AiursoftCommandApp(Command? command = null)
     {
         var descriptionAttribute = (Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly())
             .GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description;
@@ -19,7 +19,7 @@ public class AiursoftCommand
         _rootCommand = command ?? new RootCommand(descriptionAttribute ?? "Unknown usage. Please write the project description in the '.csproj' file.");
     }
 
-    public AiursoftCommand Configure(Action<RootCommand> configure)
+    public AiursoftCommandApp Configure(Action<Command> configure)
     {
         configure(_rootCommand);
         return this;

@@ -3,9 +3,9 @@ using Aiursoft.CommandFramework.Abstracts;
 
 namespace Aiursoft.CommandFramework.Extensions;
 
-public static class RootCommandExtensions
+public static class CommandExtensions
 {
-    public static RootCommand AddPlugins(this RootCommand command, params IPlugin[] pluginInstallers)
+    public static Command AddPlugins(this Command command, params IPlugin[] pluginInstallers)
     {
         foreach (var plugin in pluginInstallers)
         {
