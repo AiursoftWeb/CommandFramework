@@ -11,6 +11,10 @@ Aiursoft CommandFramework is a framework for building command line tools.
 * Auto argument parsing
 * Auto help page generation
 * Auto version page generation
+* Run as service
+* Auto dependency injection
+* Auto command completion
+* Run as a single command app or a nested command app
 
 With this framework, you can build a command line tool with just a few lines of code.
 
@@ -21,7 +25,7 @@ Example project it built:
 * [Parser](https://gitlab.aiursoft.cn/anduin/parser)
 * [HappyRecorder](https://gitlab.aiursoft.cn/anduin/happyrecorder)
 * [Dotlang](https://gitlab.aiursoft.cn/aiursoft/dotlang)
-* [Ni Bot](https://gitlab.aiursoft.cn/aiursoft/ni-bot)
+* [Httping](https://gitlab.aiursoft.cn/aiursoft/httping)
 * [IPMI Controller](https://gitlab.aiursoft.cn/aiursoft/ipmicontroller)
 
 ```bash
@@ -65,6 +69,10 @@ To use it, you need to decide between:
 ## Download a real sample project
 
 If you want to explore a real project built with this framework, please check [Happy Recorder](https://gitlab.aiursoft.cn/anduin/HappyRecorder) as an example.
+
+## More doc
+
+* [Write unit tests](./docs/write_tests.md)
 
 ## How to contribute
 
