@@ -13,15 +13,12 @@ public class AiursoftCommandApp
 {
     private readonly Command _rootCommand;
 
-    public AiursoftCommandApp(ExecutableCommandHandlerBuilder? command = null)
+    public AiursoftCommandApp()
     {
         var descriptionAttribute = (Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly())
             .GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description;
 
         _rootCommand = 
-            // Single executable app
-            command?.BuildAsCommand() ??
-            // Nested CLI app
             new RootCommand(descriptionAttribute ?? "Unknown usage. Please write the project description in the '.csproj' file.");
     }
 
@@ -29,15 +26,6 @@ public class AiursoftCommandApp
     {
         configure(_rootCommand);
         return this;
-    }
-
-    public Task<int> RunAsync(string[] args, IConsole? console = null, Option? defaultOption = null)
-    {
-        var program= new CommandLineBuilder(_rootCommand)
-            .EnablePosixBundling()
-            .UseDefaults()
-            .Build();
-        return program.InvokeAsync(args.WithDefaultTo(defaultOption), console);
     }
     
     public Task<int> RunAsync(string[] args, IConsole? console = null, ExecutableCommandHandlerBuilder? defaultHandler = null)

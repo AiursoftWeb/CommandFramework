@@ -1,5 +1,10 @@
 ﻿using System.CommandLine;
+using System.CommandLine.Builder;
 using System.CommandLine.Invocation;
+using System.CommandLine.IO;
+using System.CommandLine.Parsing;
+using Aiursoft.CommandFramework.Extensions;
+using Aiursoft.CommandFramework.Models;
 
 namespace Aiursoft.CommandFramework.Framework;
 
@@ -25,5 +30,27 @@ public abstract class ExecutableCommandHandlerBuilder : CommandHandlerBuilder
         
         command.SetHandler(Execute);
         return command;
+    }
+    
+    public Task<int> RunAsync(string[] args, IConsole? console = null, Option? defaultOption = null)
+    {
+        var thisCommand = BuildAsCommand();
+        var program= new CommandLineBuilder(thisCommand)
+            .EnablePosixBundling()
+            .UseDefaults()
+            .Build();
+        return program.InvokeAsync(args.WithDefaultTo(defaultOption), console);
+    }
+    
+    public async Task<TestResult> TestRunAsync(string[] args, Option? defaultOption = null)
+    {
+        var thisCommand = BuildAsCommand();
+        var testConsole = new TestConsole();
+        var program = new CommandLineBuilder(thisCommand)
+            .EnablePosixBundling()
+            .UseDefaults()
+            .Build();
+        var programReturn = await program.InvokeAsync(args.WithDefaultTo(defaultOption), testConsole);
+        return new TestResult(programReturn, testConsole);
     }
 }
