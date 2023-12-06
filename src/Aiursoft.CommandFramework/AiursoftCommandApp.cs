@@ -4,6 +4,7 @@ using System.CommandLine.IO;
 using System.CommandLine.Parsing;
 using System.Reflection;
 using Aiursoft.CommandFramework.Extensions;
+using Aiursoft.CommandFramework.Framework;
 using Aiursoft.CommandFramework.Models;
 
 namespace Aiursoft.CommandFramework;
@@ -12,12 +13,16 @@ public class AiursoftCommandApp
 {
     private readonly Command _rootCommand;
 
-    public AiursoftCommandApp(Command? command = null)
+    public AiursoftCommandApp(ExecutableCommandHandlerBuilder? command = null)
     {
         var descriptionAttribute = (Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly())
             .GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description;
 
-        _rootCommand = command ?? new RootCommand(descriptionAttribute ?? "Unknown usage. Please write the project description in the '.csproj' file.");
+        _rootCommand = 
+            // Single executable app
+            command?.BuildAsCommand() ??
+            // Nested CLI app
+            new RootCommand(descriptionAttribute ?? "Unknown usage. Please write the project description in the '.csproj' file.");
     }
 
     public AiursoftCommandApp Configure(Action<Command> configure)
@@ -33,6 +38,15 @@ public class AiursoftCommandApp
             .UseDefaults()
             .Build();
         return program.InvokeAsync(args.WithDefaultTo(defaultOption), console);
+    }
+    
+    public Task<int> RunAsync(string[] args, IConsole? console = null, ExecutableCommandHandlerBuilder? defaultHandler = null)
+    {
+        var program= new CommandLineBuilder(_rootCommand)
+            .EnablePosixBundling()
+            .UseDefaults()
+            .Build();
+        return program.InvokeAsync(args.WithDefaultTo(defaultHandler), console);
     }
     
     public async Task<TestResult> TestRunAsync(string[] args, Option? defaultOption = null)
