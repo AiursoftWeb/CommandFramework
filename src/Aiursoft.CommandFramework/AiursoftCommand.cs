@@ -11,11 +11,12 @@ public class AiursoftCommand
 {
     private readonly RootCommand _rootCommand;
 
-    public AiursoftCommand()
+    public AiursoftCommand(RootCommand? command = null)
     {
         var descriptionAttribute = (Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly())
             .GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description;
-        _rootCommand = new RootCommand(descriptionAttribute ?? "Unknown usage. Please write the project description in the '.csproj' file.");
+
+        _rootCommand = command ?? new RootCommand(descriptionAttribute ?? "Unknown usage. Please write the project description in the '.csproj' file.");
     }
 
     public AiursoftCommand Configure(Action<RootCommand> configure)
