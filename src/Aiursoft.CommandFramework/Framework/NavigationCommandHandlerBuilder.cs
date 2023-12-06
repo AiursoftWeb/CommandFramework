@@ -1,15 +1,16 @@
 using System.CommandLine;
+using Aiursoft.CommandFramework.Abstracts;
 
 namespace Aiursoft.CommandFramework.Framework;
 
-public abstract class NavigationCommandHandler
+public abstract class NavigationCommandHandlerBuilder : ICommandHandlerBuilder
 {
     public abstract string Name { get; }
     public abstract string Description { get; }
 
     public virtual string[] Alias => Array.Empty<string>();
 
-    public virtual CommandHandler[] GetSubCommandHandlers() => Array.Empty<CommandHandler>();
+    public virtual CommandHandlerBuilder[] GetSubCommandHandlers() => Array.Empty<CommandHandlerBuilder>();
 
     public virtual Option[] GetCommandOptions() => Array.Empty<Option>();
 
