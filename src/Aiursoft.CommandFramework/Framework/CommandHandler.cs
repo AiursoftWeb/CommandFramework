@@ -1,4 +1,5 @@
 ﻿using System.CommandLine;
+using System.CommandLine.Invocation;
 
 namespace Aiursoft.CommandFramework.Framework;
 
@@ -6,6 +7,8 @@ public abstract class CommandHandler
 {
     public abstract string Name { get; }
     public abstract string Description { get; }
+
+    protected abstract Task Execute(InvocationContext context);
 
     public virtual string[] Alias => Array.Empty<string>();
 
@@ -30,13 +33,9 @@ public abstract class CommandHandler
         {
             command.AddCommand(subcommand.BuildAsCommand());
         }
-
-        OnCommandBuilt(command);
+        
+        command.SetHandler(Execute);
 
         return command;
-    }
-
-    public virtual void OnCommandBuilt(Command command)
-    {
     }
 }
