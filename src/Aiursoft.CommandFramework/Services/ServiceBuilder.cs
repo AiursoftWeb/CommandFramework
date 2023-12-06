@@ -18,7 +18,11 @@ public static class ServiceBuilder
         hostBuilder.ConfigureLogging(logging =>
         {
             logging
+                .AddFilter("Microsoft.Hosting", LogLevel.Warning)
                 .AddFilter("Microsoft.Extensions", LogLevel.Warning)
+                .AddFilter("Microsoft.AspNetCore", LogLevel.Warning)
+                .AddFilter("Microsoft.EntityFrameworkCore", LogLevel.Warning)
+                .AddFilter("Microsoft.Data", LogLevel.Warning)
                 .AddFilter("System", LogLevel.Warning);
             logging.AddSimpleConsole(options =>
             {
