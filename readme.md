@@ -16,26 +16,7 @@ Aiursoft CommandFramework is a framework for building command line tools.
 * Auto command completion
 * Run as a single command app or a nested command app
 
-With this framework, you can build a command line tool with just a few lines of code.
-
-Example project it built:
-
-Nested command app:
-
-* [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja)
-* [HappyRecorder](https://gitlab.aiursoft.cn/anduin/happyrecorder)
-
-Single command app:
-
-* [Static](https://gitlab.aiursoft.cn/aiursoft/static)
-* [Httping](https://gitlab.aiursoft.cn/aiursoft/httping)
-* [DotDownload](https://gitlab.aiursoft.cn/aiursoft/dotdownload)
-* [Parser](https://gitlab.aiursoft.cn/anduin/parser)
-* [Dotlang](https://gitlab.aiursoft.cn/aiursoft/dotlang)
-
-Background service:
-
-* [IPMI Controller](https://gitlab.aiursoft.cn/aiursoft/ipmicontroller)
+With this framework, you can build a modern command line tool with just a few lines of code.
 
 ```bash
 C:\workspace> ninja.exe
@@ -313,8 +294,8 @@ public class IntegrationTests
     [TestMethod]
     public async Task InvokeUnknown()
     {
-        var result = await _program.TestRunAsync(new[] { "--wtf" });
-        Assert.AreEqual(1, result.ProgramReturn);
+        var result = await _program.TestRunAsync(new[] { "config", "get-db-location" });
+        Assert.AreEqual(0, result.ProgramReturn);
     }
 
     [TestMethod]
@@ -370,7 +351,13 @@ protected override async Task Execute(InvocationContext context)
 }
 ```
 
-That's it! You can even start a background service in your command line tool!
+That's it!
+
+## Learn step 7: How to build and configure a background service?
+
+You can even start a background service in your command line tool!
+
+To build a background service, you need to implement an `IHostedService`. Here use `ServerMonitor` as an example:
 
 ```csharp
 
@@ -391,8 +378,9 @@ protected override async Task Execute(InvocationContext context)
     
     var host = ServiceBuilder
         .CreateCommandHostBuilder<Startup>(verbose)
-        .ConfigureServices((hostBuilderContext , services)=>
+        .ConfigureServices((hostBuilderContext, services)=>
         {
+            // You can configure your services here.
             services.Configure<ProfileConfig>(config =>
             {
                 config.Profile = profile;
@@ -423,10 +411,6 @@ Nested command app:
 Background service:
 
 * [IPMI Controller](https://gitlab.aiursoft.cn/aiursoft/ipmicontroller) as an example.
-
-## More doc
-
-* [Write unit tests](./docs/write_tests.md)
 
 ## How to contribute
 
