@@ -9,6 +9,7 @@ public static class OptionsProvider
     {
         var options = new Option[]
         {
+            CommonOptionsProvider.PathOptions,
             CommonOptionsProvider.DryRunOption,
             CommonOptionsProvider.VerboseOption
         };

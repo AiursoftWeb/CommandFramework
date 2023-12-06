@@ -1,4 +1,5 @@
 using Aiursoft.CommandFramework.Extensions;
+using Aiursoft.CommandFramework.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aiursoft.CommandFramework.Tests;
@@ -29,6 +30,13 @@ public class IntegrationTests
         var result = await _program.TestRunAsync(new[] { "--version" });
         Assert.AreEqual(0, result.ProgramReturn);
     }
+    
+    [TestMethod]
+    public async Task InvokeVersionAsDefault()
+    {
+        var result = await _program.TestRunAsync(new[] { "what" }, CommonOptionsProvider.PathOptions);
+        Assert.AreEqual(0, result.ProgramReturn);
+    }
 
     [TestMethod]
     public async Task InvokeUnknown()
@@ -41,6 +49,6 @@ public class IntegrationTests
     public async Task InvokeWithoutArg()
     {
         var result = await _program.TestRunAsync(Array.Empty<string>());
-        Assert.AreEqual(0, result.ProgramReturn);
+        Assert.AreEqual(1, result.ProgramReturn);
     }
 }

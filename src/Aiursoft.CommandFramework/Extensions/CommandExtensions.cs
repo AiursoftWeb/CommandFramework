@@ -14,6 +14,27 @@ public static class CommandExtensions
                 command.Add(pluginFeature.BuildAsCommand());
             }
         }
+
         return command;
+    }
+
+    public static string[] WithDefaultTo(this string[] args, Option? option)
+    {
+        if (option is null)
+        {
+            return args;
+        }
+        
+        if (args.Length == 0)
+        {
+            return args;
+        }
+
+        if (args.First().StartsWith("-"))
+        {
+            return args;
+        }
+
+        return new List<string> { $"--{option.Name}" }.Concat(args).ToArray();
     }
 }
