@@ -67,10 +67,7 @@ public class DownloadHandler : ExecutableCommandHandlerBuilder
     public static readonly Option<string> Url =
         new(
             aliases: new[] { "-u", "--url" },
-            description: "The target url to download.")
-        {
-            IsRequired = true
-        };
+            description: "The target url to download.");
 
     public override string Name => "download";
 
@@ -79,35 +76,25 @@ public class DownloadHandler : ExecutableCommandHandlerBuilder
     public override Option[] GetCommandOptions() => new Option[]
     {
         // Configure your options here.
-
-        CommonOptionsProvider.VerboseOption,
-        DownloadHandler.Url // Your own options.
+        DownloadHandler.Url
     };
 
     protected override async Task Execute(InvocationContext context)
     {
         // Your code entry:
-
-        var verbose = context.ParseResult.GetValueForOption(CommonOptionsProvider.VerboseOption);
-        var url = context.ParseResult.GetValueForOption(DownloadHandler.Url)!;
+        var url = context.ParseResult.GetValueForOption(DownloadHandler.Url);
 
         Console.WriteLine($"Downloading file from: {url}...");
-        var client = new HttpClient();
-        var response = await client.GetAsync(url);
-        var content = await response.Content.ReadAsStringAsync();
-        Console.WriteLine(content);
     }
 }
-```
 
-Now you can start your app! Finish your `Program.cs` entry code!
-
-```csharp
+// Now you can start your app! Finish your `Program.cs` entry code!
 public class Program
 {
     public static async Task Main(string[] args)
     {
-      return await new DownloadHandler().RunAsync(args, defaultOption: OptionsProvider.Url);
+      return await new DownloadHandler()
+        .RunAsync(args, defaultOption: OptionsProvider.Url);
     }
 }
 ```
@@ -116,8 +103,6 @@ Build and run you app!
 
 ```bash
 $ your-downloader.exe --url https://www.aiursoft.cn
-# or
-$ your-downloader.exe https://www.aiursoft.cn
 # outputs:
 Downloading file from: https://www.aiursoft.cn...
 ```
