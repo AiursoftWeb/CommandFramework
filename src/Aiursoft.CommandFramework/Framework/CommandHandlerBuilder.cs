@@ -1,16 +1,23 @@
-﻿using System.CommandLine;
-using System.CommandLine.Invocation;
+using System.CommandLine;
+using Aiursoft.CommandFramework.Abstracts;
 
 namespace Aiursoft.CommandFramework.Framework;
 
-public abstract class CommandHandlerBuilder : NavigationCommandHandlerBuilder
+public abstract class CommandHandlerBuilder : ICommandHandlerBuilder
 {
-    protected abstract Task Execute(InvocationContext context);
+    public abstract string Name { get; }
+    public abstract string Description { get; }
+    
+    public virtual string[] Alias => Array.Empty<string>();
 
-    public override Command BuildAsCommand()
+    public virtual Command BuildAsCommand()
     {
-        var command = base.BuildAsCommand();
-        command.SetHandler(Execute);
-        return command;
+        var command = new Command(Name, Description);
+        foreach (var alias in Alias)
+        {
+            command.AddAlias(alias);
+        }
+        
+        return command; 
     }
 }

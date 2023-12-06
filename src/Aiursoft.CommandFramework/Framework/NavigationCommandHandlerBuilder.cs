@@ -1,31 +1,17 @@
 using System.CommandLine;
-using Aiursoft.CommandFramework.Abstracts;
 
 namespace Aiursoft.CommandFramework.Framework;
 
-public abstract class NavigationCommandHandlerBuilder : ICommandHandlerBuilder
+/// <summary>
+/// Command handler builder with sub command handlers.
+/// </summary>
+public abstract class NavigationCommandHandlerBuilder : CommandHandlerBuilder
 {
-    public abstract string Name { get; }
-    public abstract string Description { get; }
-
-    public virtual string[] Alias => Array.Empty<string>();
-
     public virtual CommandHandlerBuilder[] GetSubCommandHandlers() => Array.Empty<CommandHandlerBuilder>();
 
-    public virtual Option[] GetCommandOptions() => Array.Empty<Option>();
-
-    public virtual Command BuildAsCommand()
+    public override Command BuildAsCommand()
     {
-        var command = new Command(Name, Description);
-        foreach (var alias in Alias)
-        {
-            command.AddAlias(alias);
-        }
-
-        foreach (var option in GetCommandOptions())
-        {
-            command.AddOption(option);
-        }
+        var command = base.BuildAsCommand();
 
         foreach (var subcommand in GetSubCommandHandlers())
         {
