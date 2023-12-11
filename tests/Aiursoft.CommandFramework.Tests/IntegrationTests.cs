@@ -1,4 +1,3 @@
-using Aiursoft.CommandFramework.Extensions;
 using Aiursoft.CommandFramework.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -11,7 +10,10 @@ public class IntegrationTests
 
     public IntegrationTests()
     {
-        _program = new AiursoftCommandApp();
+        _program = new AiursoftCommandApp()
+            .WithGlobalOptions(CommonOptionsProvider.PathOptions)
+            .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
+            .WithGlobalOptions(CommonOptionsProvider.DryRunOption);
     }
 
     [TestMethod]
