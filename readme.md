@@ -328,6 +328,7 @@ Then in your `Execute(InvocationContext context)` function:
 
 protected override async Task Execute(InvocationContext context)
 {
+  var verbose = context.ParseResult.GetValueForOption(CommonOptionsProvider.VerboseOption);
   var host = ServiceBuilder
             .CreateCommandHostBuilder<Startup>(verbose) // Your own startup class.
             .Build();
