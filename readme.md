@@ -14,6 +14,7 @@ Aiursoft CommandFramework is a framework for building command line tools.
 * Run as service
 * Auto dependency injection
 * Auto command completion
+* Auto logger with `--verbose` option support
 * Run as a single command app or a nested command app
 
 With this framework, you can build a modern command line tool with just a few lines of code.
@@ -391,6 +392,7 @@ Single command app:
 
 Nested command app:
 
+* [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja) as an example.
 * [Happy Recorder](https://gitlab.aiursoft.cn/anduin/HappyRecorder) as an example.
 
 Background service:
