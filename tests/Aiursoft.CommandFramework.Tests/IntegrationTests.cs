@@ -6,15 +6,11 @@ namespace Aiursoft.CommandFramework.Tests;
 [TestClass]
 public class IntegrationTests
 {
-    private readonly AiursoftCommandApp _program;
-
-    public IntegrationTests()
-    {
-        _program = new AiursoftCommandApp()
-            .WithGlobalOptions(CommonOptionsProvider.PathOptions)
-            .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
-            .WithGlobalOptions(CommonOptionsProvider.DryRunOption);
-    }
+    private readonly AiursoftCommandApp _program = new AiursoftCommandApp()
+        .WithGlobalOptions(CommonOptionsProvider.PathOptions)
+        .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
+        .WithGlobalOptions(CommonOptionsProvider.DryRunOption)
+        .WithFeature(new CalendarHandler());
 
     [TestMethod]
     public async Task InvokeHelp()
@@ -34,12 +30,12 @@ public class IntegrationTests
     }
     
     [TestMethod]
-    public async Task InvokeVersionAsDefault()
+    public async Task InvokeCalendar()
     {
-        var result = await _program.TestRunAsync(new[] { "what" }, CommonOptionsProvider.PathOptions);
+        var result = await _program.TestRunWithDefaultHandlerAsync(new[] { "--path", "something" }, new CalendarHandler());
         Assert.AreEqual(0, result.ProgramReturn);
     }
-
+    
     [TestMethod]
     public async Task InvokeUnknown()
     {

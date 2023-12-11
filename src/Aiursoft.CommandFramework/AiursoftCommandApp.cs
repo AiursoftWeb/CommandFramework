@@ -77,4 +77,11 @@ public class AiursoftCommandApp
         var programReturn = await BuildParser().InvokeAsync(args.WithDefaultOption(defaultOption), testConsole);
         return new TestResult(programReturn, testConsole);
     }
+    
+    public async Task<TestResult> TestRunWithDefaultHandlerAsync(string[] args, ExecutableCommandHandlerBuilder? defaultHandlerBuilder = null)
+    {
+        var testConsole = new TestConsole();
+        var programReturn = await BuildParser().InvokeAsync(args.WithDefaultHandlerBuilder(defaultHandlerBuilder), testConsole);
+        return new TestResult(programReturn, testConsole);
+    }
 }
