@@ -20,7 +20,7 @@ public static class ArgsExtensions
         return command;
     }
 
-    public static string[] WithDefaultTo(this string[] args, Option? option)
+    public static string[] WithDefaultOption(this string[] args, Option? option)
     {
         if (option is null)
         {
@@ -37,10 +37,11 @@ public static class ArgsExtensions
             return args;
         }
 
+        // The first item in args is not an option, so we add the default option to the args.
         return new List<string> { $"--{option.Name}" }.Concat(args).ToArray();
     }
     
-    public static string[] WithDefaultTo(this string[] args, ExecutableCommandHandlerBuilder? builder)
+    public static string[] WithDefaultHandlerBuilder(this string[] args, ExecutableCommandHandlerBuilder? builder)
     {
         if (builder is null)
         {
@@ -49,6 +50,7 @@ public static class ArgsExtensions
         
         if (args.Length == 0 || args.First().StartsWith("-"))
         {
+            // No args or the first item in args is an option, so we add the default builder name to the args.
             return new List<string> { builder.Name }.Concat(args).ToArray();
         }
         

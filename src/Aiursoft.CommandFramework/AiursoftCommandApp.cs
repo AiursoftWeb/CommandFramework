@@ -14,6 +14,14 @@ public class AiursoftCommandApp
 {
     private readonly Command _rootCommand;
 
+    private Parser BuildParser()
+    {
+        return new CommandLineBuilder(_rootCommand)
+            .EnablePosixBundling()
+            .UseDefaults()
+            .Build();
+    }
+    
     public AiursoftCommandApp()
     {
         var descriptionAttribute = (Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly())
@@ -48,23 +56,25 @@ public class AiursoftCommandApp
         return this;
     }
     
-    public Task<int> RunAsync(string[] args, IConsole? console = null, ExecutableCommandHandlerBuilder? defaultHandler = null)
+    public Task<int> RunAsync(string[] args)
     {
-        var program= new CommandLineBuilder(_rootCommand)
-            .EnablePosixBundling()
-            .UseDefaults()
-            .Build();
-        return program.InvokeAsync(args.WithDefaultTo(defaultHandler), console);
+        return BuildParser().InvokeAsync(args);
+    }
+    
+    public Task<int> RunWithDefaultHandler(string[] args, ExecutableCommandHandlerBuilder? defaultHandlerBuilder = null)
+    {
+        return BuildParser().InvokeAsync(args.WithDefaultHandlerBuilder(defaultHandlerBuilder));
+    }
+    
+    public Task<int> RunWithDefaultOption(string[] args, Option? defaultOption = null)
+    {
+        return BuildParser().InvokeAsync(args.WithDefaultOption(defaultOption));
     }
     
     public async Task<TestResult> TestRunAsync(string[] args, Option? defaultOption = null)
     {
         var testConsole = new TestConsole();
-        var program = new CommandLineBuilder(_rootCommand)
-            .EnablePosixBundling()
-            .UseDefaults()
-            .Build();
-        var programReturn = await program.InvokeAsync(args.WithDefaultTo(defaultOption), testConsole);
+        var programReturn = await BuildParser().InvokeAsync(args.WithDefaultOption(defaultOption), testConsole);
         return new TestResult(programReturn, testConsole);
     }
 }
