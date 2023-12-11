@@ -3,6 +3,7 @@ using System.CommandLine.Builder;
 using System.CommandLine.IO;
 using System.CommandLine.Parsing;
 using System.Reflection;
+using Aiursoft.CommandFramework.Abstracts;
 using Aiursoft.CommandFramework.Extensions;
 using Aiursoft.CommandFramework.Framework;
 using Aiursoft.CommandFramework.Models;
@@ -22,6 +23,25 @@ public class AiursoftCommandApp
             new RootCommand(descriptionAttribute ?? "Unknown usage. Please write the project description in the '.csproj' file.");
     }
 
+    public AiursoftCommandApp WithGlobalOptions(Option option)
+    {
+        _rootCommand.AddGlobalOption(option);
+        return this;
+    }
+
+    public AiursoftCommandApp WithFeature(Func<ICommandHandlerBuilder> builder)
+    {
+        _rootCommand.Add(builder().BuildAsCommand());
+        return this;
+    }
+
+    public AiursoftCommandApp WithFeature(ICommandHandlerBuilder builder)
+    {
+        _rootCommand.Add(builder.BuildAsCommand());
+        return this;
+    }
+
+    [Obsolete]
     public AiursoftCommandApp Configure(Action<Command> configure)
     {
         configure(_rootCommand);

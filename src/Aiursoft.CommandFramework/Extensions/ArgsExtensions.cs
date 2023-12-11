@@ -4,8 +4,9 @@ using Aiursoft.CommandFramework.Framework;
 
 namespace Aiursoft.CommandFramework.Extensions;
 
-public static class CommandExtensions
+public static class ArgsExtensions
 {
+    [Obsolete]
     public static Command AddPlugins(this Command command, params IPlugin[] pluginInstallers)
     {
         foreach (var plugin in pluginInstallers)

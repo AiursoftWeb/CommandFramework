@@ -31,7 +31,8 @@ public abstract class ExecutableCommandHandlerBuilder : CommandHandlerBuilder
         command.SetHandler(Execute);
         return command;
     }
-    
+
+    [Obsolete]
     public Task<int> RunAsync(string[] args, IConsole? console = null, Option? defaultOption = null)
     {
         var thisCommand = BuildAsCommand();
@@ -41,7 +42,8 @@ public abstract class ExecutableCommandHandlerBuilder : CommandHandlerBuilder
             .Build();
         return program.InvokeAsync(args.WithDefaultTo(defaultOption), console);
     }
-    
+
+    [Obsolete]
     public async Task<TestResult> TestRunAsync(string[] args, Option? defaultOption = null)
     {
         var thisCommand = BuildAsCommand();

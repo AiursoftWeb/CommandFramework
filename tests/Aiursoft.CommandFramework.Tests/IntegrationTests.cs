@@ -11,7 +11,7 @@ public class IntegrationTests
 
     public IntegrationTests()
     {
-        _program = new AiursoftCommandApp().Configure(command => command.AddGlobalOptions().AddPlugins());
+        _program = new AiursoftCommandApp();
     }
 
     [TestMethod]
