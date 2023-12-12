@@ -6,7 +6,7 @@ namespace Aiursoft.CommandFramework.Tests;
 [TestClass]
 public class IntegrationTests
 {
-    private readonly AiursoftCommandApp _program = new AiursoftCommandApp()
+    private readonly NestedCommandApp _program = new NestedCommandApp()
         .WithGlobalOptions(CommonOptionsProvider.PathOptions)
         .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
         .WithGlobalOptions(CommonOptionsProvider.DryRunOption)

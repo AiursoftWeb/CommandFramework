@@ -6,8 +6,7 @@ namespace Aiursoft.NiBot.Tests.PingTests;
 [TestClass]
 public class PingTests
 {
-    private readonly AiursoftCommandApp _program = new AiursoftCommandApp()
-        .AsSingleCommandApp(new PingHandler())
+    private readonly SingleCommandApp _program = new SingleCommandApp(new PingHandler())
         .WithDefaultOption(OptionsProvider.ServerOption);
     
     [TestMethod]
