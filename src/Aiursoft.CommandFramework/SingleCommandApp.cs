@@ -3,14 +3,14 @@ using Aiursoft.CommandFramework.Framework;
 
 namespace Aiursoft.CommandFramework;
 
-public class SingleCommandApp : CommandApp
+public class SingleCommandApp<T> : CommandApp where T : ExecutableCommandHandlerBuilder,new ()
 {
-    public SingleCommandApp(ExecutableCommandHandlerBuilder builder)
-        : base (builder.BuildAsCommand())
+    public SingleCommandApp()
+        : base (new T().BuildAsCommand())
     {
     }
     
-    public SingleCommandApp WithDefaultOption(Option option)
+    public SingleCommandApp<T> WithDefaultOption(Option option)
     {
         DefaultOptionName = option;
         return this;

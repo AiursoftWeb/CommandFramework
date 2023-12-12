@@ -5,7 +5,7 @@ namespace Aiursoft.CommandFramework.Tests.PingTests;
 [TestClass]
 public class PingTests
 {
-    private readonly SingleCommandApp _program = new SingleCommandApp(new PingHandler())
+    private readonly SingleCommandApp<PingHandler> _program = new SingleCommandApp<PingHandler>()
         .WithDefaultOption(OptionsProvider.ServerOption);
     
     [TestMethod]
