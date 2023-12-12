@@ -391,6 +391,7 @@ Single command app:
 * [Parser](https://gitlab.aiursoft.cn/anduin/parser) as an example.
 * [DotDownload](https://gitlab.aiursoft.cn/aiursoft/dotdownload) as an example.
 * [Httping](https://gitlab.aiursoft.cn/aiursoft/httping) as an example.
+* [Static](https://gitlab.aiursoft.cn/aiursoft/static) as an example.
 
 Nested command app:
 
