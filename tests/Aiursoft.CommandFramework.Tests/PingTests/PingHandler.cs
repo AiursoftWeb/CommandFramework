@@ -2,7 +2,7 @@
 using System.CommandLine.Invocation;
 using Aiursoft.CommandFramework.Framework;
 
-namespace Aiursoft.NiBot.Tests.PingTests;
+namespace Aiursoft.CommandFramework.Tests.PingTests;
 
 public class PingHandler : ExecutableCommandHandlerBuilder
 {

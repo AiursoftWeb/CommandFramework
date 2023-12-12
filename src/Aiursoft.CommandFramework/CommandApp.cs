@@ -2,6 +2,7 @@
 using System.CommandLine.Builder;
 using System.CommandLine.IO;
 using System.CommandLine.Parsing;
+using System.Diagnostics.CodeAnalysis;
 using Aiursoft.CommandFramework.Extensions;
 using Aiursoft.CommandFramework.Models;
 
@@ -25,6 +26,7 @@ public abstract class CommandApp
             .Build();
     }
     
+    [ExcludeFromCodeCoverage]
     public Task<int> RunAsync(string[] args)
     {
         return BuildParser().InvokeAsync(

@@ -1,6 +1,6 @@
 ﻿using System.CommandLine;
 
-namespace Aiursoft.NiBot.Tests.PingTests;
+namespace Aiursoft.CommandFramework.Tests.PingTests;
 
 public static class OptionsProvider
 {
