@@ -63,39 +63,50 @@ In `Aiursoft.CommandFramework`, a command handler is a class that can be execute
 To build an executable command, you can do:
 
 ```csharp
+using System.CommandLine;
+using System.CommandLine.Invocation;
+using Aiursoft.CommandFramework;
+using Aiursoft.CommandFramework.Framework;
+
 public class DownloadHandler : ExecutableCommandHandlerBuilder
 {
     public static readonly Option<string> Url =
         new(
             aliases: new[] { "-u", "--url" },
-            description: "The target url to download.");
+            description: "The target url to download.")
+    {
+        IsRequired = true
+    };
 
-    public override string Name => "download";
+    protected override string Name => "download";
 
-    public override string Description => "Download an HTTP Url.";
+    protected override string Description => "Download an HTTP Url.";
     
-    public override Option[] GetCommandOptions() => new Option[]
+    protected override Option[] GetCommandOptions() => new Option[]
     {
         // Configure your options here.
         DownloadHandler.Url
     };
 
-    protected override async Task Execute(InvocationContext context)
+    protected override Task Execute(InvocationContext context)
     {
         // Your code entry:
         var url = context.ParseResult.GetValueForOption(DownloadHandler.Url);
 
         Console.WriteLine($"Downloading file from: {url}...");
+
+        return Task.CompletedTask;
     }
 }
 
 // Now you can start your app! Finish your `Program.cs` entry code!
 public class Program
 {
-    public static async Task Main(string[] args)
+    public static async Task<int> Main(string[] args)
     {
-      return await new DownloadHandler()
-        .RunAsync(args, defaultOption: OptionsProvider.Url);
+        return await new SingleCommandApp<DownloadHandler>()
+            .WithDefaultOption(DownloadHandler.Url)
+            .RunAsync(args);
     }
 }
 ```
@@ -110,15 +121,19 @@ Downloading file from: https://www.aiursoft.cn...
 
 ## Learn step 2: How to test your command handler?
 
-It it super simple to test a command handler:
+It it super simple to test a command handler.
+
+Assuming you are using `Microsoft.VisualStudio.TestTools.UnitTesting`, you can do:
 
 ```csharp
+using Aiursoft.CommandFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 [TestClass]
 public class IntegrationTests
 {
-    private readonly DownloadHandler _program = new();
+    private readonly SingleCommandApp<DownloadHandler> _program = new SingleCommandApp<DownloadHandler>()
+            .WithDefaultOption(DownloadHandler.Url);
 
     [TestMethod]
     public async Task InvokeHelp()
@@ -171,129 +186,40 @@ A nested command app is a command line tool that has multiple commands. like:
 To do that, first you need to build several executable command handlers. And then wrap them with a `NavigationCommandHandlerBuilder`:
 
 ```csharp
-public class ConfigHandler : NavigationCommandHandlerBuilder
+public class NetworkHandler : NavigationCommandHandlerBuilder
 {
-    public override string Name => "config";
+    protected override string Name => "network";
 
-    public override string Description => "Configuration management.";
+    protected override string Description => "Network related commands.";
 
-    public override CommandHandlerBuilder[] GetSubCommandHandlers()
+    protected override CommandHandlerBuilder[] GetSubCommandHandlers()
     {
-        return new CommandHandlerBuilder[]
-        {
-            new GetDbLocationHandler(), // Where the `GetDbLocationHandler` is an `ExecutableCommandHandlerBuilder`.
-            new SetDbLocationHandler()  // Where the `SetDbLocationHandler` is an `ExecutableCommandHandlerBuilder`.
-        };
+        return
+        [
+            // Where the `DownloadHandler` is an executable command handler.
+            new DownloadHandler()
+        ];
     }
 }
 ```
 
-And it's a little different to run a nested command app:
+And it's very similar to build a nested command app:
 
 ```csharp
 // Program.cs of the nested command app.
-return await new AiursoftCommandApp()
-    .Configure(command =>
-    {
-        command
-            .AddGlobalOptions()
-            .AddPlugins(
-                new CalendarPlugin() // One app can have multiple plugins.
-            );
-    })
-    .RunAsync(args);
-
-// This is a plugin for your app
-public class CalendarPlugin : IPlugin
-{
-    public ICommandHandlerBuilder[] Install() // One plugin can provide multiple command handlers.
-    {
-        return new ICommandHandlerBuilder[] // Both `NavigationCommandHandlerBuilder` and `ExecutableCommandHandlerBuilder` can be registered.
-        {
-            new ConfigHandler() // Where the `ConfigHandler` is a `NavigationCommandHandlerBuilder`.
-        };
-    }
-}
-
-// Your app may have some global options. So you can write a global options provider.
-public static class OptionsProvider
-{
-    public static Command AddGlobalOptions(this Command command)
-    {
-        var options = new Option[]
-        {
-            CommonOptionsProvider.DryRunOption,
-            CommonOptionsProvider.VerboseOption
-        };
-        foreach (var option in options)
-        {
-            command.AddGlobalOption(option);
-        }
-        return command;
-    }
-}
+return await new NestedCommandApp()
+    .WithGlobalOptions(CommonOptionsProvider.DryRunOption)
+    .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
+    .WithFeature(new ConfigHandler())
 ```
 
 Now you can try:
 
 ```bash
-your-app config get-db-location
+your-app network download --url https://www.aiursoft.cn
 ```
 
-## Learn step 5: How to test a nested command app?
-
-It's also simple to test a nested command app:
-
-```csharp
-[TestClass]
-public class IntegrationTests
-{
-    private readonly AiursoftCommandApp _program;
-
-    public IntegrationTests()
-    {
-        _program = new AiursoftCommandApp()
-            .Configure(command =>
-            {
-                command
-                    .AddGlobalOptions()
-                    .AddPlugins(
-                        new CalendarPlugin()
-                    );
-            });
-    }
-
-    [TestMethod]
-    public async Task InvokeHelp()
-    {
-        var result = await _program.TestRunAsync(new[] { "--help" });
-        Assert.AreEqual(0, result.ProgramReturn);
-    }
-
-    [TestMethod]
-    public async Task InvokeVersion()
-    {
-        var result = await _program.TestRunAsync(new[] { "--version" });
-        Assert.AreEqual(0, result.ProgramReturn);
-    }
-
-    [TestMethod]
-    public async Task InvokeUnknown()
-    {
-        var result = await _program.TestRunAsync(new[] { "config", "get-db-location" });
-        Assert.AreEqual(0, result.ProgramReturn);
-    }
-
-    [TestMethod]
-    public async Task InvokeWithoutArg()
-    {
-        var result = await _program.TestRunAsync(Array.Empty<string>());
-        Assert.AreEqual(1, result.ProgramReturn);
-    }
-}
-```
-
-## Learn step 6: How to build a command app with dependency injection?
+## Learn step 5: How to build a command app with dependency injection?
 
 It's easy to build a command app with dependency injection.
 
@@ -340,7 +266,7 @@ protected override async Task Execute(InvocationContext context)
 
 That's it!
 
-## Learn step 7: How to build and configure a background service?
+## Learn step 6: How to build and configure a background service?
 
 You can even start a background service in your command line tool!
 
