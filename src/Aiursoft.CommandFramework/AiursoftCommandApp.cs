@@ -12,7 +12,8 @@ namespace Aiursoft.CommandFramework;
 
 public class AiursoftCommandApp
 {
-    private readonly Command _rootCommand;
+    private Command _rootCommand;
+    private Option? _defaultOptionName;
 
     private Parser BuildParser()
     {
@@ -20,6 +21,16 @@ public class AiursoftCommandApp
             .EnablePosixBundling()
             .UseDefaults()
             .Build();
+    }
+    
+    private bool IsNestedCommandApp()
+    {
+        return _rootCommand is RootCommand;
+    }
+    
+    private bool IsSingleCommandApp()
+    {
+        return !IsNestedCommandApp();
     }
     
     public AiursoftCommandApp()
@@ -31,57 +42,64 @@ public class AiursoftCommandApp
             new RootCommand(descriptionAttribute ?? "Unknown usage. Please write the project description in the '.csproj' file.");
     }
 
+    public AiursoftCommandApp AsSingleCommandApp(ExecutableCommandHandlerBuilder builder)
+    {
+        _rootCommand = builder.BuildAsCommand();
+        return this;
+    }
+
     public AiursoftCommandApp WithGlobalOptions(Option option)
     {
+        if (IsSingleCommandApp())
+        {
+            throw new InvalidOperationException("Single command app should not have global options!");
+        }
         _rootCommand.AddGlobalOption(option);
         return this;
     }
 
     public AiursoftCommandApp WithFeature(Func<ICommandHandlerBuilder> builder)
     {
+        if (IsSingleCommandApp())
+        {
+            throw new InvalidOperationException("Single command app should not have features!");
+        }
         _rootCommand.Add(builder().BuildAsCommand());
         return this;
     }
 
     public AiursoftCommandApp WithFeature(ICommandHandlerBuilder builder)
     {
+        if (IsSingleCommandApp())
+        {
+            throw new InvalidOperationException("Single command app should not have features!");
+        }
         _rootCommand.Add(builder.BuildAsCommand());
         return this;
     }
-
-    [Obsolete]
-    public AiursoftCommandApp Configure(Action<Command> configure)
+    
+    public AiursoftCommandApp WithDefaultOption(Option option)
     {
-        configure(_rootCommand);
+        if (IsNestedCommandApp())
+        {
+            throw new InvalidOperationException("Nested command app should not have default option!");
+        }
+        _defaultOptionName = option;
         return this;
     }
-    
+
     public Task<int> RunAsync(string[] args)
     {
-        return BuildParser().InvokeAsync(args);
-    }
-    
-    public Task<int> RunWithDefaultHandler(string[] args, ExecutableCommandHandlerBuilder? defaultHandlerBuilder = null)
-    {
-        return BuildParser().InvokeAsync(args.WithDefaultHandlerBuilder(defaultHandlerBuilder));
-    }
-    
-    public Task<int> RunWithDefaultOption(string[] args, Option? defaultOption = null)
-    {
-        return BuildParser().InvokeAsync(args.WithDefaultOption(defaultOption));
+        return BuildParser().InvokeAsync(
+            args
+            .WithDefaultOption(_defaultOptionName));
     }
     
     public async Task<TestResult> TestRunAsync(string[] args, Option? defaultOption = null)
     {
         var testConsole = new TestConsole();
-        var programReturn = await BuildParser().InvokeAsync(args.WithDefaultOption(defaultOption), testConsole);
-        return new TestResult(programReturn, testConsole);
-    }
-    
-    public async Task<TestResult> TestRunWithDefaultHandlerAsync(string[] args, ExecutableCommandHandlerBuilder? defaultHandlerBuilder = null)
-    {
-        var testConsole = new TestConsole();
-        var programReturn = await BuildParser().InvokeAsync(args.WithDefaultHandlerBuilder(defaultHandlerBuilder), testConsole);
+        var programReturn = await BuildParser().InvokeAsync(args
+            .WithDefaultOption(_defaultOptionName), testConsole);
         return new TestResult(programReturn, testConsole);
     }
 }

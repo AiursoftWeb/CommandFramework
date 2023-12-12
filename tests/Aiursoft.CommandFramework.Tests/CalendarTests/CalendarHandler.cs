@@ -8,9 +8,9 @@ namespace Aiursoft.CommandFramework.Tests;
 
 public class CalendarHandler : ExecutableCommandHandlerBuilder
 {
-    public override string Name => "calendar";
+    protected override string Name => "calendar";
 
-    public override string Description => "Show calendar.";
+    protected override string Description => "Show calendar.";
 
     protected override Task Execute(InvocationContext context)
     {

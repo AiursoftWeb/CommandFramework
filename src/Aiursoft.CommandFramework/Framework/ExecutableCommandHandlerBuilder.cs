@@ -12,7 +12,7 @@ public abstract class ExecutableCommandHandlerBuilder : CommandHandlerBuilder
 {
     protected abstract Task Execute(InvocationContext context);
 
-    public virtual Option[] GetCommandOptions() => Array.Empty<Option>();
+    protected virtual IEnumerable<Option> GetCommandOptions() => Array.Empty<Option>();
 
     public override Command BuildAsCommand()
     {

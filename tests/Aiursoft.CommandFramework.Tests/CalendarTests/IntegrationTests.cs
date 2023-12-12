@@ -32,7 +32,7 @@ public class IntegrationTests
     [TestMethod]
     public async Task InvokeCalendar()
     {
-        var result = await _program.TestRunWithDefaultHandlerAsync(new[] { "--path", "something" }, new CalendarHandler());
+        var result = await _program.TestRunAsync(new[] { "calendar", "--path", "something" });
         Assert.AreEqual(0, result.ProgramReturn);
     }
     

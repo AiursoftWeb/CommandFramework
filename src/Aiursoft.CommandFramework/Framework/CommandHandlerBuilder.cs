@@ -5,10 +5,10 @@ namespace Aiursoft.CommandFramework.Framework;
 
 public abstract class CommandHandlerBuilder : ICommandHandlerBuilder
 {
-    public abstract string Name { get; }
-    public abstract string Description { get; }
-    
-    public virtual string[] Alias => Array.Empty<string>();
+    protected abstract string Name { get; }
+    protected abstract string Description { get; }
+
+    protected virtual string[] Alias => Array.Empty<string>();
 
     public virtual Command BuildAsCommand()
     {
