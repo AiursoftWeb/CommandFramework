@@ -392,6 +392,7 @@ Single command app:
 * [DotDownload](https://gitlab.aiursoft.cn/aiursoft/dotdownload) as an example.
 * [Httping](https://gitlab.aiursoft.cn/aiursoft/httping) as an example.
 * [Static](https://gitlab.aiursoft.cn/aiursoft/static) as an example.
+* [Dotlang](https://gitlab.aiursoft.cn/aiursoft/dotlang) as an example.
 
 Nested command app:
 
