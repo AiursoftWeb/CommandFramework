@@ -4,7 +4,7 @@ using Aiursoft.CommandFramework.Models;
 using Aiursoft.CommandFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Aiursoft.CommandFramework.Tests;
+namespace Aiursoft.CommandFramework.Tests.CalendarTests;
 
 public class CalendarHandler : ExecutableCommandHandlerBuilder
 {

@@ -1,4 +1,4 @@
-﻿namespace Aiursoft.CommandFramework.Tests;
+﻿namespace Aiursoft.CommandFramework.Tests.CalendarTests;
 
 public class CalendarRenderer
 {

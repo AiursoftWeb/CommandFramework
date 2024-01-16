@@ -1,7 +1,7 @@
 using Aiursoft.CommandFramework.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Aiursoft.CommandFramework.Tests;
+namespace Aiursoft.CommandFramework.Tests.CalendarTests;
 
 [TestClass]
 public class IntegrationTests

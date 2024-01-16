@@ -3,7 +3,7 @@ using Aiursoft.CommandFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Aiursoft.CommandFramework.Tests;
+namespace Aiursoft.CommandFramework.Tests.CalendarTests;
 
 [TestClass]
 public class ServiceBuilderTests
