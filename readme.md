@@ -308,6 +308,36 @@ protected override async Task Execute(InvocationContext context)
 
 To read more about how to write an `IHostedService`, please read [this doc](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services) from Microsoft.
 
+## Learn step 7: How to display a progress bar?
+
+It's simple. You can use the `ProgressBar` class from `Aiursoft.CommandFramework`:
+
+```csharp
+using Aiursoft.CommandFramework.Models;
+
+ProgressBar? bar = null;
+if (showProgress) bar = new ProgressBar();
+var completedTasks = 0;
+var totalTasks = tasks.Length;
+
+foreach (var task in tasks)
+{
+    if (showProgress)
+    {
+        Interlocked.Increment(ref completedTasks);
+        // ReSharper disable once AccessToDisposedClosure
+        bar?.Report((double)completedTasks / totalTasks);
+    }
+}
+bar?.Dispose();
+```
+
+That's it! When running, you may see:
+
+```bash
+[########################-----------------------]  50%
+```
+
 ## Learn step 8: Read more examples
 
 If you want to explore a real project built with this framework, please download the following project:
@@ -322,6 +352,7 @@ Single command app:
 
 Nested command app:
 
+* [NiBot](https://gitlab.aiursoft.cn/aiursoft/nibot) as an example.
 * [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja) as an example.
 * [Happy Recorder](https://gitlab.aiursoft.cn/anduin/HappyRecorder) as an example.
 
