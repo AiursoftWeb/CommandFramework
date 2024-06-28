@@ -8,7 +8,7 @@ public abstract class CommandHandlerBuilder : ICommandHandlerBuilder
     protected abstract string Name { get; }
     protected abstract string Description { get; }
 
-    protected virtual string[] Alias => Array.Empty<string>();
+    protected virtual string[] Alias => [];
 
     public virtual Command BuildAsCommand()
     {

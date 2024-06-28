@@ -7,7 +7,7 @@ namespace Aiursoft.CommandFramework.Framework;
 /// </summary>
 public abstract class NavigationCommandHandlerBuilder : CommandHandlerBuilder
 {
-    protected virtual CommandHandlerBuilder[] GetSubCommandHandlers() => Array.Empty<CommandHandlerBuilder>();
+    protected virtual CommandHandlerBuilder[] GetSubCommandHandlers() => [];
 
     public override Command BuildAsCommand()
     {

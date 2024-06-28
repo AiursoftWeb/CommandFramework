@@ -12,7 +12,7 @@ public class ConfigTests
     [TestMethod]
     public async Task InvokeData()
     {
-        var result = await _program.TestRunAsync(new[] { "data" });
+        var result = await _program.TestRunAsync(["data"]);
 
         Assert.AreEqual(0, result.ProgramReturn);
     }
@@ -20,7 +20,7 @@ public class ConfigTests
     [TestMethod]
     public async Task InvokeConfig()
     {
-        var result = await _program.TestRunAsync(new[] { "config", "--help" });
+        var result = await _program.TestRunAsync(["config", "--help"]);
 
         Assert.AreEqual(0, result.ProgramReturn);
     }
@@ -28,7 +28,7 @@ public class ConfigTests
     [TestMethod]
     public async Task InvokeConfigGet()
     {
-        var result = await _program.TestRunAsync(new[] { "config", "get" });
+        var result = await _program.TestRunAsync(["config", "get"]);
 
         Assert.AreEqual(0, result.ProgramReturn);
     }
@@ -36,7 +36,7 @@ public class ConfigTests
     [TestMethod]
     public async Task InvokeConfigAliasGet()
     {
-        var result = await _program.TestRunAsync(new[] { "cfg", "get" });
+        var result = await _program.TestRunAsync(["cfg", "get"]);
 
         Assert.AreEqual(0, result.ProgramReturn);
     }
@@ -44,7 +44,7 @@ public class ConfigTests
     [TestMethod]
     public async Task InvokeConfigSet()
     {
-        var result = await _program.TestRunAsync(new[] { "config", "set" });
+        var result = await _program.TestRunAsync(["config", "set"]);
 
         Assert.AreEqual(0, result.ProgramReturn);
     }

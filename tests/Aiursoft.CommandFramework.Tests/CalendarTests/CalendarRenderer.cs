@@ -29,7 +29,7 @@ public class CalendarRenderer
 
     private string GetWeather()
     {
-        string[] weathers = { "Sunny", "Cloudy", "Rainy", "Snowy", "Foggy", "Windy", "Stormy" };
+        string[] weathers = ["Sunny", "Cloudy", "Rainy", "Snowy", "Foggy", "Windy", "Stormy"];
 
         return weathers[_rand.Next(0, weathers.Length)];
     }

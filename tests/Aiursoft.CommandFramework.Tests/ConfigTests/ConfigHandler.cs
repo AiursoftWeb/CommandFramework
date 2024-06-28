@@ -8,7 +8,7 @@ public class DataHandler : NavigationCommandHandlerBuilder
     protected override string Name => "data";
     protected override string Description => "data control.";
 
-    protected override string[] Alias => new[] { "dat" };
+    protected override string[] Alias => ["dat"];
 }
 
 public class ConfigHandler : NavigationCommandHandlerBuilder
@@ -16,15 +16,15 @@ public class ConfigHandler : NavigationCommandHandlerBuilder
     protected override string Name => "config";
     protected override string Description => "config control.";
 
-    protected override string[] Alias => new[] { "cfg" };
+    protected override string[] Alias => ["cfg"];
 
     protected override CommandHandlerBuilder[] GetSubCommandHandlers()
     {
-        return new CommandHandlerBuilder[]
-        {
+        return
+        [
             new GetConfig(),
-            new SetConfig(),
-        };
+            new SetConfig()
+        ];
     }
 }
 
