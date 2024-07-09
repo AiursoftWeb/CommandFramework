@@ -1,7 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
-namespace Aiursoft.CommandFramework.Models;
+namespace Aiursoft.CommandFramework.ProgressBar;
 
 /// <summary>
 /// An ASCII progress bar
