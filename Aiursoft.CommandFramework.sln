@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aiursoft.CommandFramework",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aiursoft.CommandFramework.Tests", "tests\Aiursoft.CommandFramework.Tests\Aiursoft.CommandFramework.Tests.csproj", "{06692BC8-09CE-40DB-9611-1C68532E8525}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aiursoft.CommandFramework.ProgressBar", "src\Aiursoft.CommandFramework.ProgressBar\Aiursoft.CommandFramework.ProgressBar.csproj", "{3EDAF15C-6399-4B2A-B486-1D5E2BA30C86}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{06692BC8-09CE-40DB-9611-1C68532E8525}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06692BC8-09CE-40DB-9611-1C68532E8525}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06692BC8-09CE-40DB-9611-1C68532E8525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EDAF15C-6399-4B2A-B486-1D5E2BA30C86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EDAF15C-6399-4B2A-B486-1D5E2BA30C86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EDAF15C-6399-4B2A-B486-1D5E2BA30C86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EDAF15C-6399-4B2A-B486-1D5E2BA30C86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{11D2DF31-1AF3-422C-9891-B0CBF8C863A4} = {1853660A-713B-475B-BCFA-1F7D6BC96D22}
 		{06692BC8-09CE-40DB-9611-1C68532E8525} = {18F43B1A-B2A7-4BE0-B8ED-5CDAF4F1FA58}
+		{3EDAF15C-6399-4B2A-B486-1D5E2BA30C86} = {1853660A-713B-475B-BCFA-1F7D6BC96D22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3B3D91BA-D157-48F0-B66E-899B29902C2D}

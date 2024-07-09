@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <Version>8.0.0</Version>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>Aiursoft.CommandFramework.ProgressBar</AssemblyName>
+    <RootNamespace>Aiursoft.CommandFramework.ProgressBar</RootNamespace>
+    <IsTestProject>false</IsTestProject>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IsPackable>true</IsPackable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Company>Aiursoft</Company>
+    <Product>ProgressBar</Product>
+    <Description>Nuget package of 'ProgressBar' provided by Aiursoft</Description>
+    <PackageId>Aiursoft.CommandFramework.ProgressBar</PackageId>
+    <PackageTags>nuget package dotnet csproj progressbar console</PackageTags>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../readme.md" Pack="true" PackagePath="." />
+  </ItemGroup>
+</Project>
