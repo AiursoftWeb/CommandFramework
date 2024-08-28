@@ -211,6 +211,7 @@ return await new NestedCommandApp()
     .WithGlobalOptions(CommonOptionsProvider.DryRunOption)
     .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
     .WithFeature(new ConfigHandler())
+    .RunAsync(args);
 ```
 
 Now you can try:
