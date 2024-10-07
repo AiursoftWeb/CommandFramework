@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>8.0.0</Version>
+    <Version>8.0.1</Version>
     <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>Aiursoft.CommandFramework.ProgressBar</AssemblyName>
     <RootNamespace>Aiursoft.CommandFramework.ProgressBar</RootNamespace>
@@ -15,6 +15,10 @@
     <Description>Nuget package of 'ProgressBar' provided by Aiursoft</Description>
     <PackageId>Aiursoft.CommandFramework.ProgressBar</PackageId>
     <PackageTags>nuget package dotnet csproj progressbar console</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://gitlab.aiursoft.cn/aiursoft/commandframework</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://gitlab.aiursoft.cn/aiursoft/commandframework.git</RepositoryUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
