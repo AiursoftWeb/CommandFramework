@@ -345,7 +345,6 @@ If you want to explore a real project built with this framework, please download
 
 Single command app:
 
-* [Parser](https://gitlab.aiursoft.cn/anduin/parser) as an example.
 * [DotDownload](https://gitlab.aiursoft.cn/aiursoft/dotdownload) as an example.
 * [Httping](https://gitlab.aiursoft.cn/aiursoft/httping) as an example.
 * [Static](https://gitlab.aiursoft.cn/aiursoft/static) as an example.
@@ -356,6 +355,7 @@ Nested command app:
 * [NiBot](https://gitlab.aiursoft.cn/aiursoft/nibot) as an example.
 * [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja) as an example.
 * [Happy Recorder](https://gitlab.aiursoft.cn/anduin/HappyRecorder) as an example.
+* [Parser](https://gitlab.aiursoft.cn/anduin/parser) as an example.
 
 Background service:
 
