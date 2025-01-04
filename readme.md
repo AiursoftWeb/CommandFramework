@@ -220,12 +220,24 @@ public class NetworkHandler : NavigationCommandHandlerBuilder
 And it's very similar to build a nested command app:
 
 ```csharp
+using System.CommandLine;
+using System.CommandLine.Invocation;
+using Aiursoft.CommandFramework;
+using Aiursoft.CommandFramework.Framework;
+using Aiursoft.CommandFramework.Models;
+
 // Program.cs of the nested command app.
-return await new NestedCommandApp()
-    .WithGlobalOptions(CommonOptionsProvider.DryRunOption)
-    .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
-    .WithFeature(new NetworkHandler())
-    .RunAsync(args);
+public class Program
+{
+    public static async Task<int> Main(string[] args)
+    {
+        return await new NestedCommandApp()
+            .WithGlobalOptions(CommonOptionsProvider.DryRunOption)
+            .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
+            .WithFeature(new NetworkHandler())
+            .RunAsync(args);
+    }
+}
 ```
 
 Now you can try:
