@@ -58,6 +58,20 @@ dotnet add package Aiursoft.CommandFramework
 
 ## Learn step 1: How to build an executable command handler?
 
+To get started, create a new .NET console application:
+
+```bash
+mkdir LearnCommandFramework
+cd LearnCommandFramework
+dotnet new console
+```
+
+Install the `Aiursoft.CommandFramework` package:
+
+```bash
+dotnet add package Aiursoft.CommandFramework
+```
+
 In `Aiursoft.CommandFramework`, a command handler is a class that can be executed as a command.
 
 To build an executable command, you can do:
