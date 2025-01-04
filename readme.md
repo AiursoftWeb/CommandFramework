@@ -258,6 +258,21 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Aiursoft.DotDownload.Http;
 
+public class Downloader
+{
+    private readonly HttpClient _client;
+
+    public Downloader(HttpClient client)
+    {
+        _client = client;
+    }
+
+    public async Task DownloadWithWatchAsync(string url, string savePath, int blockSize, int threads, bool showProgressBar)
+    {
+        // Your download logic here.
+    }
+}
+
 public class Startup : IStartUp
 {
     public void ConfigureServices(IServiceCollection services)
