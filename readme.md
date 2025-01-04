@@ -224,7 +224,7 @@ And it's very similar to build a nested command app:
 return await new NestedCommandApp()
     .WithGlobalOptions(CommonOptionsProvider.DryRunOption)
     .WithGlobalOptions(CommonOptionsProvider.VerboseOption)
-    .WithFeature(new DownloadHandler())
+    .WithFeature(new NetworkHandler())
     .RunAsync(args);
 ```
 
