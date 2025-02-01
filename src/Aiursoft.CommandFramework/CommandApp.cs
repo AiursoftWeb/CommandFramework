@@ -27,11 +27,19 @@ public abstract class CommandApp
     }
     
     [ExcludeFromCodeCoverage]
-    public Task<int> RunAsync(string[] args)
+    public async Task<int> RunAsync(string[] args, bool noSleep = false)
     {
-        return BuildParser().InvokeAsync(
+        var result = await BuildParser().InvokeAsync(
             args
                 .WithDefaultOption(DefaultOptionName));
+        
+        // Sleep await because the console logger might not finish writing logs.
+        if (!noSleep)
+        {
+            await Task.Delay(100);
+        }
+        
+        return result;
     }
     
     public async Task<TestResult> TestRunAsync(string[] args, Option? defaultOption = null)

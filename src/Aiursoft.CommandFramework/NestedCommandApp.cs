@@ -4,16 +4,11 @@ using Aiursoft.CommandFramework.Abstracts;
 
 namespace Aiursoft.CommandFramework;
 
-public class NestedCommandApp : CommandApp
+public class NestedCommandApp() : CommandApp(new RootCommand(
+    (Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly())
+    .GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description ??
+    "Unknown usage. Please write the project description in the '.csproj' file."))
 {
-    public NestedCommandApp() : base(
-        new RootCommand(
-            (Assembly.GetEntryAssembly() ?? Assembly.GetCallingAssembly())
-            .GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description ?? 
-            "Unknown usage. Please write the project description in the '.csproj' file."))
-    {
-    }
-
     public NestedCommandApp WithGlobalOptions(Option option)
     {
         RootCommand.AddGlobalOption(option);
