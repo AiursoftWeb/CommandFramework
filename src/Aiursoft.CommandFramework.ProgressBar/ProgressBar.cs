@@ -4,95 +4,128 @@ using System.Text;
 namespace Aiursoft.CommandFramework.ProgressBar;
 
 /// <summary>
-/// An ASCII progress bar
+/// An ASCII progress bar with elapsed time and remaining time (ETA as TimeSpan).
 /// </summary>
 [ExcludeFromCodeCoverage]
 public class ProgressBar : IDisposable, IProgress<double>
 {
-	private const int BlockCount = 50;
-	private const string Animation = @"|/-\";
-	private readonly TimeSpan _animationInterval = TimeSpan.FromSeconds(1.0 / 8);
-	private readonly Timer _timer;
-	private double _currentProgress;
-	private string _currentText = string.Empty;
-	private bool _disposed;
-	private int _animationIndex;
+    private const int BlockCount = 50;
+    private const string Animation = @"|/-\";
+    private readonly TimeSpan _animationInterval = TimeSpan.FromSeconds(1.0 / 8);
+    private readonly TimeSpan _sampleWindow = TimeSpan.FromSeconds(10);
 
-	public ProgressBar()
+    private readonly Timer _timer;
+    private readonly DateTime _startTime;
+    private readonly List<(DateTime Timestamp, double Progress)> _samples = new();
+
+    private double _currentProgress;
+    private string _currentText = string.Empty;
+    private bool _disposed;
+    private int _animationIndex;
+
+    public ProgressBar()
     {
-		_timer = new Timer(TimerHandler);
+        _startTime = DateTime.UtcNow;
+        _timer = new Timer(TimerHandler);
 
-		// A progress bar is only for temporary display in a console window.
-		// If the console output is redirected to a file, draw nothing.
-		// Otherwise, we'll end up with a lot of garbage in the target file.
-		if (!Console.IsOutputRedirected)
+        if (!Console.IsOutputRedirected)
         {
-			ResetTimer();
-		}
-	}
+            ResetTimer();
+        }
+    }
 
-	public void Report(double value)
+    /// <summary>
+    /// Report a progress value in [0..1].
+    /// </summary>
+    public void Report(double value)
     {
-		// Make sure value is in [0..1] range
-		value = Math.Max(0, Math.Min(1, value));
-		Interlocked.Exchange(ref _currentProgress, value);
-	}
+        value = Math.Max(0, Math.Min(1, value));
+        Interlocked.Exchange(ref _currentProgress, value);
+    }
 
-	private void TimerHandler(object? state) {
-		lock (_timer)
-        {
-			if (_disposed) return;
-
-			var progressBlockCount = (int) (_currentProgress * BlockCount);
-			var percent = (int) (_currentProgress * 100);
-			var text =
-				$"[{new string('#', progressBlockCount)}{new string('-', BlockCount - progressBlockCount)}] {percent,3}% {Animation[_animationIndex++ % Animation.Length]}";
-			UpdateText(text);
-
-			ResetTimer();
-		}
-	}
-
-	private void UpdateText(string text) 
+    private void TimerHandler(object? state)
     {
-		// Get length of common portion
-		var commonPrefixLength = 0;
-		var commonLength = Math.Min(_currentText.Length, text.Length);
-		while (commonPrefixLength < commonLength && text[commonPrefixLength] == _currentText[commonPrefixLength])
+        lock (_timer)
         {
-			commonPrefixLength++;
-		}
+            if (_disposed) return;
 
-		// Backtrack to the first differing character
-		var outputBuilder = new StringBuilder();
-		outputBuilder.Append('\b', _currentText.Length - commonPrefixLength);
+            var now = DateTime.UtcNow;
+            var progress = Interlocked.CompareExchange(ref _currentProgress, 0.0, 0.0);
 
-		// Output new suffix
-		outputBuilder.Append(text[commonPrefixLength..]);
+            _samples.Add((now, progress));
+            _samples.RemoveAll(s => (now - s.Timestamp) > _sampleWindow);
 
-		// If the new text is shorter than the old one: delete overlapping characters
-		var overlapCount = _currentText.Length - text.Length;
-		if (overlapCount > 0)
-        {
-			outputBuilder.Append(' ', overlapCount);
-			outputBuilder.Append('\b', overlapCount);
-		}
+            double speed = 0;
+            if (_samples.Count >= 2)
+            {
+                var first = _samples[0];
+                var last = _samples[^1];
+                var dt = (last.Timestamp - first.Timestamp).TotalSeconds;
+                var dp = last.Progress - first.Progress;
+                if (dt > 0) speed = dp / dt;
+            }
 
-		Console.Write(outputBuilder);
-		_currentText = text;
-	}
+            string remainingText;
+            if (speed > 0 && progress < 1.0)
+            {
+                var secsRemaining = (1.0 - progress) / speed;
+                var remaining = TimeSpan.FromSeconds(secsRemaining);
+                remainingText = $"{(int)remaining.TotalHours:D2}:{remaining.Minutes:D2}:{remaining.Seconds:D2}";
+            }
+            else
+            {
+                remainingText = "--:--:--";
+            }
 
-	private void ResetTimer()
+            var elapsed = now - _startTime;
+            var elapsedText = $"{(int)elapsed.TotalHours:D2}:{elapsed.Minutes:D2}:{elapsed.Seconds:D2}";
+
+            var filled = (int)(progress * BlockCount);
+            var text =
+                $"[{new string('#', filled)}{new string('-', BlockCount - filled)}] " +
+                $"{(int)(progress * 100),3}% {Animation[_animationIndex++ % Animation.Length]} " +
+                $"[Elapsed: {elapsedText}] [Remaining: {remainingText}]";
+
+            UpdateText(text);
+            ResetTimer();
+        }
+    }
+
+    private void UpdateText(string text)
     {
-		_timer.Change(_animationInterval, TimeSpan.FromMilliseconds(-1));
-	}
-
-	public void Dispose()
-    {
-		lock (_timer)
+        var common = 0;
+        var max = Math.Min(_currentText.Length, text.Length);
+        while (common < max && _currentText[common] == text[common])
         {
-			_disposed = true;
-			UpdateText(string.Empty);
-		}
-	}
+            common++;
+        }
+
+        var output = new StringBuilder();
+        output.Append('\b', _currentText.Length - common);
+        output.Append(text[common..]);
+
+        var overlap = _currentText.Length - text.Length;
+        if (overlap > 0)
+        {
+            output.Append(' ', overlap)
+                .Append('\b', overlap);
+        }
+
+        Console.Write(output);
+        _currentText = text;
+    }
+
+    private void ResetTimer()
+        => _timer.Change(_animationInterval, Timeout.InfiniteTimeSpan);
+
+    public void Dispose()
+    {
+        lock (_timer)
+        {
+            _disposed = true;
+            UpdateText(string.Empty);
+        }
+
+        _timer.Dispose();
+    }
 }
