@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Aiursoft.CommandFramework.Tests.PingTests;
+﻿namespace Aiursoft.CommandFramework.Tests.PingTests;
 
 [TestClass]
 public class PingTests

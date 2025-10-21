@@ -1,7 +1,6 @@
 ﻿using Aiursoft.CommandFramework.Abstracts;
 using Aiursoft.CommandFramework.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Aiursoft.CommandFramework.Tests.CalendarTests;
 
