@@ -1,5 +1,6 @@
 using Aiursoft.CommandFramework.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+[assembly: DoNotParallelize]
 
 namespace Aiursoft.CommandFramework.Tests.CalendarTests;
 
@@ -18,7 +19,7 @@ public class IntegrationTests
         var result = await _program.TestRunAsync(["--help"]);
 
         Assert.AreEqual(0, result.ProgramReturn);
-        Assert.IsTrue(result.Output.Contains("Options:"));
+        Assert.Contains("Options:", result.Output);
         Assert.IsTrue(string.IsNullOrWhiteSpace(result.Error));
     }
 
@@ -28,14 +29,14 @@ public class IntegrationTests
         var result = await _program.TestRunAsync(["--version"]);
         Assert.AreEqual(0, result.ProgramReturn);
     }
-    
+
     [TestMethod]
     public async Task InvokeCalendar()
     {
         var result = await _program.TestRunAsync(["calendar", "--path", "something"]);
         Assert.AreEqual(0, result.ProgramReturn);
     }
-    
+
     [TestMethod]
     public async Task InvokeUnknown()
     {

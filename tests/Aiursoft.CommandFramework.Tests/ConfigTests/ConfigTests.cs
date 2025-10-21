@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace Aiursoft.CommandFramework.Tests.ConfigTests;
+﻿namespace Aiursoft.CommandFramework.Tests.ConfigTests;
 
 [TestClass]
 public class ConfigTests
