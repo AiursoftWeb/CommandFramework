@@ -1,5 +1,7 @@
 using Aiursoft.CommandFramework.Models;
 
+[assembly: DoNotParallelize]
+
 namespace Aiursoft.CommandFramework.Tests.CalendarTests;
 
 [TestClass]
