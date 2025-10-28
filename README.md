@@ -1,10 +1,10 @@
 # Aiursoft CommandFramework
 
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://gitlab.aiursoft.cn/aiursoft/commandframework/-/blob/master/LICENSE)
-[![Pipeline stat](https://gitlab.aiursoft.cn/aiursoft/commandframework/badges/master/pipeline.svg)](https://gitlab.aiursoft.cn/aiursoft/commandframework/-/pipelines)
-[![Test Coverage](https://gitlab.aiursoft.cn/aiursoft/commandframework/badges/master/coverage.svg)](https://gitlab.aiursoft.cn/aiursoft/commandframework/-/pipelines)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/blob/master/LICENSE)
+[![Pipeline stat](https://gitlab.aiursoft.com/aiursoft/commandframework/badges/master/pipeline.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/pipelines)
+[![Test Coverage](https://gitlab.aiursoft.com/aiursoft/commandframework/badges/master/coverage.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/pipelines)
 [![NuGet version (Aiursoft.CommandFramework)](https://img.shields.io/nuget/v/Aiursoft.CommandFramework.svg)](https://www.nuget.org/packages/Aiursoft.CommandFramework/)
-[![ManHours](https://manhours.aiursoft.cn/r/gitlab.aiursoft.cn/aiursoft/commandframework.svg)](https://gitlab.aiursoft.cn/aiursoft/commandframework/-/commits/master?ref_type=heads)
+[![ManHours](https://manhours.aiursoft.cn/r/gitlab.aiursoft.com/aiursoft/commandframework.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/commits/master?ref_type=heads)
 
 Aiursoft CommandFramework is a framework for building command line tools.
 
@@ -193,7 +193,7 @@ But in more scenarios, we usually need a command line tool with multiple command
 
 A nested command app is a command line tool that has multiple commands. like:
 
-* [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja)
+* [Nuget Ninja](https://gitlab.aiursoft.com/aiursoft/nugetninja)
 
 ## Learn step 4: How to build a nested command app?
 
@@ -386,21 +386,21 @@ If you want to explore a real project built with this framework, please download
 
 Single command app:
 
-* [DotDownload](https://gitlab.aiursoft.cn/aiursoft/dotdownload) as an example.
-* [Httping](https://gitlab.aiursoft.cn/aiursoft/httping) as an example.
-* [Static](https://gitlab.aiursoft.cn/aiursoft/static) as an example.
-* [Dotlang](https://gitlab.aiursoft.cn/aiursoft/dotlang) as an example.
+* [DotDownload](https://gitlab.aiursoft.com/aiursoft/dotdownload) as an example.
+* [Httping](https://gitlab.aiursoft.com/aiursoft/httping) as an example.
+* [Static](https://gitlab.aiursoft.com/aiursoft/static) as an example.
+* [Dotlang](https://gitlab.aiursoft.com/aiursoft/dotlang) as an example.
 
 Nested command app:
 
-* [NiBot](https://gitlab.aiursoft.cn/aiursoft/nibot) as an example.
-* [Nuget Ninja](https://gitlab.aiursoft.cn/aiursoft/nugetninja) as an example.
-* [Happy Recorder](https://gitlab.aiursoft.cn/anduin/HappyRecorder) as an example.
-* [Parser](https://gitlab.aiursoft.cn/anduin/parser) as an example.
+* [NiBot](https://gitlab.aiursoft.com/aiursoft/nibot) as an example.
+* [Nuget Ninja](https://gitlab.aiursoft.com/aiursoft/nugetninja) as an example.
+* [Happy Recorder](https://gitlab.aiursoft.com/anduin/HappyRecorder) as an example.
+* [Parser](https://gitlab.aiursoft.com/anduin/parser) as an example.
 
 Background service:
 
-* [IPMI Controller](https://gitlab.aiursoft.cn/aiursoft/ipmicontroller) as an example.
+* [IPMI Controller](https://gitlab.aiursoft.com/aiursoft/ipmicontroller) as an example.
 
 ## How to contribute
 
