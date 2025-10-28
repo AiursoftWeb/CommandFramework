@@ -128,9 +128,9 @@ public class Program
 Build and run you app!
 
 ```bash
-$ your-downloader.exe --url https://www.aiursoft.cn
+$ your-downloader.exe --url https://www.aiursoft.com
 # outputs:
-Downloading file from: https://www.aiursoft.cn...
+Downloading file from: https://www.aiursoft.com...
 ```
 
 ## Learn step 2: How to test your command handler?
@@ -243,7 +243,7 @@ public class Program
 Now you can try:
 
 ```bash
-your-app network download --url https://www.aiursoft.cn
+your-app network download --url https://www.aiursoft.com
 ```
 
 ## Learn step 5: How to build a command app with dependency injection?
