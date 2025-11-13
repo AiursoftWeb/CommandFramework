@@ -42,7 +42,7 @@ Commands:
   upgrade-pkg         The command to upgrade all package references to possible latest and avoid conflicts.
   clean-pkg           The command to clean up possible useless package references.
   clean-prj           The command to clean up possible useless project references.
-  ```
+```
 
 ## Why this project?
 
@@ -78,34 +78,38 @@ To build an executable command, you can do:
 
 ```csharp
 using System.CommandLine;
-using System.CommandLine.Invocation;
+using System.CommandLine.Parsing;
 using Aiursoft.CommandFramework;
 using Aiursoft.CommandFramework.Framework;
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 public class DownloadHandler : ExecutableCommandHandlerBuilder
 {
     public static readonly Option<string> Url =
         new(
-            aliases: new[] { "-u", "--url" },
-            description: "The target url to download.")
+            name: "--url",
+            aliases: new[] { "-u" })
     {
-        IsRequired = true
+        Description = "The target url to download.", // 更改：'description' 现在是属性
+        Required = true
     };
 
     protected override string Name => "download";
 
     protected override string Description => "Download an HTTP Url.";
     
-    protected override Option[] GetCommandOptions() => new Option[]
+    protected override IEnumerable<Option> GetCommandOptions() => new Option[]
     {
         // Configure your options here.
         DownloadHandler.Url
     };
 
-    protected override Task Execute(InvocationContext context)
+    protected override Task Execute(ParseResult parseResult)
     {
         // Your code entry:
-        var url = context.ParseResult.GetValueForOption(DownloadHandler.Url);
+        var url = parseResult.GetValue(DownloadHandler.Url);
 
         Console.WriteLine($"Downloading file from: {url}...");
 
@@ -125,7 +129,7 @@ public class Program
 }
 ```
 
-Build and run you app!
+Build and run you app\!
 
 ```bash
 $ your-downloader.exe --url https://www.aiursoft.com
@@ -200,6 +204,9 @@ A nested command app is a command line tool that has multiple commands. like:
 To do that, first you need to build several executable command handlers. And then wrap them with a `NavigationCommandHandlerBuilder`:
 
 ```csharp
+using Aiursoft.CommandFramework.Framework;
+using System.CommandLine;
+
 public class NetworkHandler : NavigationCommandHandlerBuilder
 {
     protected override string Name => "network";
@@ -221,10 +228,10 @@ And it's very similar to build a nested command app:
 
 ```csharp
 using System.CommandLine;
-using System.CommandLine.Invocation;
 using Aiursoft.CommandFramework;
 using Aiursoft.CommandFramework.Framework;
 using Aiursoft.CommandFramework.Models;
+using System.Threading.Tasks;
 
 // Program.cs of the nested command app.
 public class Program
@@ -255,6 +262,8 @@ Of course, you need to register your services in your `Startup` class first:
 ```csharp
 using Aiursoft.CommandFramework.Abstracts;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace Aiursoft.DotDownload.Http;
 
@@ -270,6 +279,7 @@ public class Downloader
     public async Task DownloadWithWatchAsync(string url, string savePath, int blockSize, int threads, bool showProgressBar)
     {
         // Your download logic here.
+        await Task.CompletedTask; // Sample
     }
 }
 
@@ -289,32 +299,48 @@ public class Startup : IStartUp
 }
 ```
 
-Then in your `Execute(InvocationContext context)` function:
+Then in your `Execute(ParseResult parseResult)` function:
 
 ```csharp
+using System.CommandLine.Parsing;
+using Aiursoft.CommandFramework.Models;
+using Aiursoft.CommandFramework.Services;
+using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Tasks;
+// ... other usings
+
 // This code is inside an `ExecutableCommandHandlerBuilder`.
 
-protected override async Task Execute(InvocationContext context)
+protected override async Task Execute(ParseResult parseResult)
 {
-  var verbose = context.ParseResult.GetValueForOption(CommonOptionsProvider.VerboseOption);
+  var verbose = parseResult.GetValue(CommonOptionsProvider.VerboseOption);
   var host = ServiceBuilder
             .CreateCommandHostBuilder<Startup>(verbose) // Your own startup class.
             .Build();
 
   var downloader = host.Services.GetRequiredService<Downloader>(); // Get a service from dependency injection
+  
+  string url = parseResult.GetValue(DownloadHandler.Url);
+  string savePath = "./file";
+  int blockSize = 4096;
+  int threads = 4;
+
   await downloader.DownloadWithWatchAsync(url, savePath, blockSize, threads, showProgressBar: !verbose);
 }
 ```
 
-That's it!
+That's it\!
 
 ## Learn step 6: How to build and configure a background service?
 
-You can even start a background service in your command line tool!
+You can even start a background service in your command line tool\!
 
 To build a background service, you need to implement an `IHostedService`. Here use `ServerMonitor` as an example:
 
 ```csharp
+using Aiursoft.CommandFramework.Abstracts;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 public class Startup : IStartUp
 {
@@ -325,11 +351,22 @@ public class Startup : IStartUp
     }
 }
 
-// In your `ExecutableCommandHandlerBuilder`:
-protected override async Task Execute(InvocationContext context)
+public class ProfileConfig
 {
-    var verbose = context.ParseResult.GetValueForOption(CommonOptionsProvider.VerboseOption);
-    var profile = context.ParseResult.GetValueForOption(_profile);
+    public string Profile { get; set; }
+}
+
+public static class MyOptions
+{
+    public static readonly System.CommandLine.Option<string> _profile = new("--profile");
+}
+
+
+// In your `ExecutableCommandHandlerBuilder`:
+protected override async Task Execute(ParseResult parseResult)
+{
+    var verbose = parseResult.GetValue(CommonOptionsProvider.VerboseOption);
+    var profile = parseResult.GetValue(MyOptions._profile);
     
     var host = ServiceBuilder
         .CreateCommandHostBuilder<Startup>(verbose)
@@ -356,6 +393,11 @@ It's simple. You can use the `ProgressBar` class from `Aiursoft.CommandFramework
 
 ```csharp
 using Aiursoft.CommandFramework.Models;
+using System.Threading;
+
+bool showProgress = true;
+int tasksLength = 100;
+var tasks = new int[tasksLength];
 
 ProgressBar? bar = null;
 if (showProgress) bar = new ProgressBar();
@@ -370,11 +412,12 @@ foreach (var task in tasks)
         // ReSharper disable once AccessToDisposedClosure
         bar?.Report((double)completedTasks / totalTasks);
     }
+    Thread.Sleep(10); // Sample.
 }
 bar?.Dispose();
 ```
 
-That's it! When running, you may see:
+That's it\! When running, you may see:
 
 ```bash
 [########################-----------------------]  50%
