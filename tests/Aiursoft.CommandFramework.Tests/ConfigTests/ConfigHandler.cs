@@ -1,4 +1,4 @@
-﻿using System.CommandLine.Invocation;
+﻿using System.CommandLine;
 using Aiursoft.CommandFramework.Framework;
 
 namespace Aiursoft.CommandFramework.Tests.ConfigTests;
@@ -32,7 +32,7 @@ public class GetConfig : ExecutableCommandHandlerBuilder
 {
     protected override string Name => "get";
     protected override string Description => "get config.";
-    protected override Task Execute(InvocationContext context)
+    protected override Task Execute(ParseResult parseResult)
     {
         Console.WriteLine("get config");
         return Task.CompletedTask;
@@ -43,7 +43,7 @@ public class SetConfig : ExecutableCommandHandlerBuilder
 {
     protected override string Name => "set";
     protected override string Description => "set config.";
-    protected override Task Execute(InvocationContext context)
+    protected override Task Execute(ParseResult parseResult)
     {
         Console.WriteLine("set config");
         return Task.CompletedTask;

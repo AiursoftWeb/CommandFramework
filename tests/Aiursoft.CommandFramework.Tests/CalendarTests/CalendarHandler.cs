@@ -1,4 +1,4 @@
-﻿using System.CommandLine.Invocation;
+﻿using System.CommandLine;
 using Aiursoft.CommandFramework.Framework;
 using Aiursoft.CommandFramework.Models;
 using Aiursoft.CommandFramework.Services;
@@ -12,14 +12,14 @@ public class CalendarHandler : ExecutableCommandHandlerBuilder
 
     protected override string Description => "Show calendar.";
 
-    protected override Task Execute(InvocationContext context)
+    protected override Task Execute(ParseResult context)
     {
-        var verbose = context.ParseResult.GetValueForOption(CommonOptionsProvider.VerboseOption);
+        var verbose = context.GetValue(CommonOptionsProvider.VerboseOption);
         var services = ServiceBuilder
             .CreateCommandHostBuilder<Startup>(verbose)
             .Build()
             .Services;
-        
+
         var calendar = services.GetRequiredService<CalendarRenderer>();
         calendar.Render();
         return Task.CompletedTask;

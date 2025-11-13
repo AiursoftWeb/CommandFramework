@@ -1,11 +1,10 @@
-using System.CommandLine.IO;
+// 删掉：using System.CommandLine.IO;
 
 namespace Aiursoft.CommandFramework.Models;
 
-public class TestResult(int programReturn, TestConsole console)
+public class TestResult(int programReturn, string stdOut, string stdErr)
 {
-    public int ProgramReturn { get; init; } = programReturn;
-    public string Output { get; init; } = console.Out.ToString() ?? string.Empty;
-    public string Error { get; init; } = console.Error.ToString() ?? string.Empty;
-    public TestConsole Console { get; init; } = console;
+    public int ProgramReturn { get; } = programReturn;
+    public string StdOut { get; } = stdOut;
+    public string StdErr { get; } = stdErr;
 }

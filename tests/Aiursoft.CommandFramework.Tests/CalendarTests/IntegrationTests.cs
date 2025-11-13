@@ -19,22 +19,22 @@ public class IntegrationTests
         var result = await _program.TestRunAsync(["--help"]);
 
         Assert.AreEqual(0, result.ProgramReturn);
-        Assert.Contains("Options:", result.Output);
-        Assert.IsTrue(string.IsNullOrWhiteSpace(result.Error));
+        Assert.Contains("Options:", result.StdOut);
+        Assert.IsTrue(string.IsNullOrWhiteSpace(result.StdErr), result.StdErr);
     }
 
     [TestMethod]
     public async Task InvokeVersion()
     {
         var result = await _program.TestRunAsync(["--version"]);
-        Assert.AreEqual(0, result.ProgramReturn);
+        Assert.AreEqual(0, result.ProgramReturn, result.StdErr);
     }
 
     [TestMethod]
     public async Task InvokeCalendar()
     {
         var result = await _program.TestRunAsync(["calendar", "--path", "something"]);
-        Assert.AreEqual(0, result.ProgramReturn);
+        Assert.AreEqual(0, result.ProgramReturn, result.StdErr);
     }
 
     [TestMethod]

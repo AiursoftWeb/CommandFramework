@@ -15,7 +15,7 @@ public abstract class NavigationCommandHandlerBuilder : CommandHandlerBuilder
 
         foreach (var subcommand in GetSubCommandHandlers())
         {
-            command.AddCommand(subcommand.BuildAsCommand());
+            command.Subcommands.Add(subcommand.BuildAsCommand());
         }
         return command;
     }

@@ -7,6 +7,6 @@ public class Startup : IStartUp
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddScoped<CalendarRenderer>();
+        services.AddSingleton<CalendarRenderer>();
     }
 }

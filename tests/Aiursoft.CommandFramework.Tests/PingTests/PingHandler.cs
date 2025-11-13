@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Invocation;
 using Aiursoft.CommandFramework.Framework;
 
 namespace Aiursoft.CommandFramework.Tests.PingTests;
@@ -14,12 +13,12 @@ public class PingHandler : ExecutableCommandHandlerBuilder
     {
         OptionsProvider.ServerOption,
     };
-    
-    protected override Task Execute(InvocationContext context)
+
+    protected override Task Execute(ParseResult context)
     {
-        var server = context.ParseResult.GetValueForOption(OptionsProvider.ServerOption)!;
+        var server = context.GetValue(OptionsProvider.ServerOption)!;
         Console.WriteLine($"Pinging {server}...");
-        
+
         return Task.CompletedTask;
     }
 }

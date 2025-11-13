@@ -15,7 +15,7 @@ public abstract class CommandHandlerBuilder : ICommandHandlerBuilder
         var command = new Command(Name, Description);
         foreach (var alias in Alias)
         {
-            command.AddAlias(alias);
+            command.Aliases.Add(alias);
         }
         
         return command; 
