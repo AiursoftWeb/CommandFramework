@@ -1,5 +1,4 @@
 ﻿using System.CommandLine;
-using System.CommandLine.Invocation;
 
 namespace Aiursoft.CommandFramework.Framework;
 
@@ -10,20 +9,20 @@ namespace Aiursoft.CommandFramework.Framework;
 /// </summary>
 public abstract class ExecutableCommandHandlerBuilder : CommandHandlerBuilder
 {
-    protected abstract Task Execute(InvocationContext context);
+    protected abstract Task Execute(ParseResult parseResult);
 
     protected virtual IEnumerable<Option> GetCommandOptions() => Array.Empty<Option>();
 
     public override Command BuildAsCommand()
     {
         var command = base.BuildAsCommand();
-        
+
         foreach (var option in GetCommandOptions())
         {
-            command.AddOption(option);
+            command.Options.Add(option);
         }
-        
-        command.SetHandler(Execute);
+
+        command.SetAction(Execute);
         return command;
     }
 }

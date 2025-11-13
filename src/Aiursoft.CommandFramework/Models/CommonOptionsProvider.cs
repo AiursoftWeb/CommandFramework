@@ -4,18 +4,25 @@ namespace Aiursoft.CommandFramework.Models;
 
 public static class CommonOptionsProvider
 {
-    public static readonly Option<string> PathOptions = new(
-        aliases: ["--path", "-p"],
-        description: "Path of the videos to be parsed.")
+    public static readonly Option<string> PathOptions = new Option<string>(
+        name: "--path",
+        aliases: ["-p"])
     {
-        IsRequired = true
+        Description = "Path of the videos to be parsed.",
+        Required = true
     };
 
     public static readonly Option<bool> DryRunOption = new(
-        aliases: ["--dry-run", "-d"],
-        description: "Preview changes without actually making them");
+        name: "--dry-run",
+        aliases: ["-d"])
+    {
+        Description = "Preview changes without actually making them"
+    };
 
     public static readonly Option<bool> VerboseOption = new(
-        aliases: ["--verbose", "-v"],
-        description: "Show detailed log");
+        name: "--verbose",
+        aliases: ["-v"])
+    {
+        Description = "Show detailed log"
+    };
 }

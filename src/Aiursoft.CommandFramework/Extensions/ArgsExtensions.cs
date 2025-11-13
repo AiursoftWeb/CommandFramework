@@ -10,7 +10,7 @@ public static class ArgsExtensions
         {
             return args;
         }
-        
+
         if (args.Length == 0)
         {
             return args;
@@ -22,6 +22,6 @@ public static class ArgsExtensions
         }
 
         // The first item in args is not an option, so we add the default option to the args.
-        return new List<string> { $"--{option.Name}" }.Concat(args).ToArray();
+        return new List<string> { $"{option.Name}" }.Concat(args).ToArray();
     }
 }
