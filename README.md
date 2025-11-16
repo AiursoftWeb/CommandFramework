@@ -92,7 +92,7 @@ public class DownloadHandler : ExecutableCommandHandlerBuilder
             name: "--url",
             aliases: new[] { "-u" })
     {
-        Description = "The target url to download.", // 更改：'description' 现在是属性
+        Description = "The target url to download.",
         Required = true
     };
 
@@ -129,7 +129,17 @@ public class Program
 }
 ```
 
-Build and run you app\!
+The `.WithDefaultOption(DownloadHandler.Url)` is a helper method provided by the framework. It allows users to omit the option name for the most common option. After adding this line, the following two commands are equivalent:
+
+```bash
+# Standard command
+$ your-downloader.exe --url https://www.aiursoft.com
+
+# Simplified command (enabled by WithDefaultOption)
+$ your-downloader.exe https://www.aiursoft.com
+```
+
+Build and run you app!
 
 ```bash
 $ your-downloader.exe --url https://www.aiursoft.com
@@ -172,6 +182,15 @@ public class IntegrationTests
     {
         var result = await _program.TestRunAsync(new[] { "--wtf" });
         Assert.AreEqual(1, result.ProgramReturn);
+    }
+
+    [TestMethod]
+    public async Task InvokeDownload()
+    {
+        // Test a successful run with the required option and argument
+        var result = await _program.TestRunAsync(new[] { "--url", "https://aiursoft.com" });
+        Assert.AreEqual(0, result.ProgramReturn);
+        Assert.IsTrue(result.StdOut.Contains("Downloading file from: https://aiursoft.com..."));
     }
 }
 ```
@@ -247,10 +266,12 @@ public class Program
 }
 ```
 
+Note: `CommonOptionsProvider` (used for `.WithGlobalOptions`) is a built-in helper class from the `Aiursoft.CommandFramework.Models` namespace. It provides pre-defined `Option` objects for common parameters like `--dry-run` and `--verbose` to save you from writing boilerplate code. You are also free to define and use your own options.
+
 Now you can try:
 
 ```bash
-your-app network download --url https://www.aiursoft.com
+your-app network download --url https://www.aiursoft.com my_file.zip
 ```
 
 ## Learn step 5: How to build a command app with dependency injection?
