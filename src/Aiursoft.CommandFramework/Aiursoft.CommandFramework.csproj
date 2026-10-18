@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <Version>10.0.16</Version>
+    <Version>10.0.17</Version>
     <TargetFramework>net10.0</TargetFramework>
     <AssemblyName>Aiursoft.CommandFramework</AssemblyName>
     <RootNamespace>Aiursoft.CommandFramework</RootNamespace>
@@ -17,9 +17,9 @@
     <PackageId>Aiursoft.CommandFramework</PackageId>
     <PackageTags>cli api framework parser</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://gitlab.aiursoft.com/Aiursoft/CommandFramework</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/AiursoftWeb/commandframework</PackageProjectUrl>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>https://gitlab.aiursoft.com/Aiursoft/CommandFramework.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/AiursoftWeb/commandframework.git</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
   <ItemGroup>
