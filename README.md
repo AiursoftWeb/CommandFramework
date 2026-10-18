@@ -4,7 +4,7 @@
 [![Pipeline stat](https://gitlab.aiursoft.com/aiursoft/commandframework/badges/master/pipeline.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/pipelines)
 [![Test Coverage](https://gitlab.aiursoft.com/aiursoft/commandframework/badges/master/coverage.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/pipelines)
 [![NuGet version (Aiursoft.CommandFramework)](https://img.shields.io/nuget/v/Aiursoft.CommandFramework.svg)](https://www.nuget.org/packages/Aiursoft.CommandFramework/)
-[![Man hours](https://manhours.aiursoft.com/r/gitlab.aiursoft.com/aiursoft/commandframework.svg)](https://manhours.aiursoft.com/r/gitlab.aiursoft.com/aiursoft/commandframework.html)
+[![Man hours](https://manhours.aiursoft.com/r/github.com/aiursoftweb/commandframework.svg)](https://manhours.aiursoft.com/r/github.com/aiursoftweb/commandframework.html)
 
 Aiursoft CommandFramework is a framework for building command line tools.
 
