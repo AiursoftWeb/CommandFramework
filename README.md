@@ -1,6 +1,6 @@
 # Aiursoft CommandFramework
 
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/blob/master/LICENSE)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AiursoftWeb/commandframework/blob/master/LICENSE)
 [![Pipeline stat](https://gitlab.aiursoft.com/aiursoft/commandframework/badges/master/pipeline.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/pipelines)
 [![Test Coverage](https://gitlab.aiursoft.com/aiursoft/commandframework/badges/master/coverage.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/pipelines)
 [![NuGet version (Aiursoft.CommandFramework)](https://img.shields.io/nuget/v/Aiursoft.CommandFramework.svg)](https://www.nuget.org/packages/Aiursoft.CommandFramework/)
@@ -216,7 +216,7 @@ But in more scenarios, we usually need a command line tool with multiple command
 
 A nested command app is a command line tool that has multiple commands. like:
 
-* [Nuget Ninja](https://gitlab.aiursoft.com/aiursoft/nugetninja)
+* [Nuget Ninja](https://github.com/AiursoftWeb/nugetninja)
 
 ## Learn step 4: How to build a nested command app?
 
@@ -450,21 +450,21 @@ If you want to explore a real project built with this framework, please download
 
 Single command app:
 
-* [DotDownload](https://gitlab.aiursoft.com/aiursoft/dotdownload) as an example.
-* [Httping](https://gitlab.aiursoft.com/aiursoft/httping) as an example.
-* [Static](https://gitlab.aiursoft.com/aiursoft/static) as an example.
-* [Dotlang](https://gitlab.aiursoft.com/aiursoft/dotlang) as an example.
+* [DotDownload](https://github.com/AiursoftWeb/dotdownload) as an example.
+* [Httping](https://github.com/AiursoftWeb/httping) as an example.
+* [Static](https://github.com/AiursoftWeb/static) as an example.
+* [Dotlang](https://github.com/AiursoftWeb/dotlang) as an example.
 
 Nested command app:
 
-* [NiBot](https://gitlab.aiursoft.com/aiursoft/nibot) as an example.
-* [Nuget Ninja](https://gitlab.aiursoft.com/aiursoft/nugetninja) as an example.
-* [Happy Recorder](https://gitlab.aiursoft.com/anduin/HappyRecorder) as an example.
-* [Parser](https://gitlab.aiursoft.com/anduin/parser) as an example.
+* [NiBot](https://github.com/AiursoftWeb/nibot) as an example.
+* [Nuget Ninja](https://github.com/AiursoftWeb/nugetninja) as an example.
+* [Happy Recorder](https://github.com/Anduin2017/HappyRecorder) as an example.
+* [Parser](https://github.com/Anduin2017/parser) as an example.
 
 Background service:
 
-* [IPMI Controller](https://gitlab.aiursoft.com/aiursoft/ipmicontroller) as an example.
+* [IPMI Controller](https://github.com/AiursoftWeb/ipmicontroller) as an example.
 
 ## How to contribute
 
