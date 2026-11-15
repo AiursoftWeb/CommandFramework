@@ -447,25 +447,35 @@ That's it\! When running, you may see:
 
 ## Learn step 8: Read more examples
 
-If you want to explore a real project built with this framework, please download the following project:
+Explore these real projects built with this framework. Some applications combine nested commands with background services; the groups below highlight their main usage.
 
-Single command app:
+Single command apps:
 
-* [DotDownload](https://github.com/AiursoftWeb/dotdownload) as an example.
-* [Httping](https://github.com/AiursoftWeb/httping) as an example.
-* [Static](https://github.com/AiursoftWeb/static) as an example.
-* [Dotlang](https://github.com/AiursoftWeb/dotlang) as an example.
+* [DotDownload](https://github.com/AiursoftWeb/dotdownload): Download files with configurable parallel connections.
+* [Httping](https://github.com/AiursoftWeb/httping): Measure HTTP endpoint response times.
+* [Static](https://github.com/AiursoftWeb/static): Serve a local directory over HTTP.
 
-Nested command app:
+Nested command apps:
 
-* [NiBot](https://github.com/AiursoftWeb/nibot) as an example.
-* [Nuget Ninja](https://github.com/AiursoftWeb/nugetninja) as an example.
-* [Happy Recorder](https://github.com/Anduin2017/HappyRecorder) as an example.
-* [Parser](https://github.com/Anduin2017/parser) as an example.
+* [Dotlang](https://github.com/AiursoftWeb/dotlang): Extract localizable strings and manage translation resources.
+* [NiBot](https://github.com/AiursoftWeb/nibot): Find duplicate images and manage image archives.
+* [Nuget Ninja](https://github.com/AiursoftWeb/nugetninja): Inspect and maintain .NET project dependencies.
+* [Happy Recorder](https://github.com/Anduin2017/HappyRecorder): Record media through a command-line interface.
+* [Parser](https://github.com/Anduin2017/parser): Parse and process data through subcommands.
+* [Apkg](https://github.com/AiursoftWeb/Apkg): Build, test, publish, and manage Debian packages.
+* [AlertCenter](https://github.com/AiursoftWeb/AlertCenter): Report CI results and query, create, and resolve incidents.
+* [S360](https://github.com/AiursoftWeb/S360): Check project dependencies against supply-chain policies.
+* [Kanban](https://github.com/AiursoftWeb/Kanban): Manage boards, columns, cards, and comments.
+* [DMS](https://github.com/AiursoftWeb/dms): Manage deployment operations through a CLI and join or run agents through nested commands.
+* [NetworkTest](https://github.com/AiursoftWeb/NetworkTest): Measure network connection quality.
+* [FileLock](https://github.com/AiursoftWeb/FileLock): Encrypt and decrypt files for secure storage.
+* [Voyager](https://github.com/AiursoftWeb/Voyager): Create projects from templates and list available templates.
+* [AnduinOS Offline Bundles](https://github.com/AiursoftWeb/anduinosofflinebundles): Build, inspect, verify, and publish offline update bundles.
 
-Background service:
+Background services:
 
-* [IPMI Controller](https://github.com/AiursoftWeb/ipmicontroller) as an example.
+* [IPMI Controller](https://github.com/AiursoftWeb/ipmicontroller): Monitor hardware and control fans through IPMI.
+* [StatHub](https://github.com/AiursoftWeb/StatHub): Collect server statistics and report them to a StatHub server.
 
 ## How to contribute
 
