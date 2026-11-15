@@ -460,8 +460,8 @@ Nested command apps:
 * [Dotlang](https://github.com/AiursoftWeb/dotlang): Extract localizable strings and manage translation resources.
 * [NiBot](https://github.com/AiursoftWeb/nibot): Find duplicate images and manage image archives.
 * [Nuget Ninja](https://github.com/AiursoftWeb/nugetninja): Inspect and maintain .NET project dependencies.
-* [Happy Recorder](https://github.com/Anduin2017/HappyRecorder): Record media through a command-line interface.
-* [Parser](https://github.com/Anduin2017/parser): Parse and process data through subcommands.
+* [Happy Recorder](https://github.com/Anduin2017/HappyRecorder): Track personal activity records and query their history.
+* [Parser](https://github.com/Anduin2017/parser): Re-encode and archive videos with FFmpeg subcommands.
 * [Apkg](https://github.com/AiursoftWeb/Apkg): Build, test, publish, and manage Debian packages.
 * [AlertCenter](https://github.com/AiursoftWeb/AlertCenter): Report CI results and query, create, and resolve incidents.
 * [S360](https://github.com/AiursoftWeb/S360): Check project dependencies against supply-chain policies.
