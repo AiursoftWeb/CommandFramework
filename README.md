@@ -1,5 +1,7 @@
 # Aiursoft CommandFramework
 
+<a name="aiursoft-commandframework"></a>
+
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/AiursoftWeb/commandframework/blob/master/LICENSE)
 [![Pipeline stat](https://badge-proxy.aiursoft.com/aiursoft/commandframework/badges/master/pipeline.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/pipelines)
 [![Test Coverage](https://badge-proxy.aiursoft.com/aiursoft/commandframework/badges/master/coverage.svg)](https://gitlab.aiursoft.com/aiursoft/commandframework/-/pipelines)
@@ -31,7 +33,7 @@ Usage:
 
 Options:
   -p, --path <path> (REQUIRED)   Path of the projects to be changed.
-  --nuget-server <nuget-server>  If you want to use a customized nuget server instead of the official nuget.org, 
+  --nuget-server <nuget-server>  If you want to use a customized nuget server instead of the official nuget.org,
   --token <token>                The PAT token which has privilege to access the nuget server.
   -d, --dry-run                  Preview changes without actually making them
   -v, --verbose                  Show detailed log
@@ -45,11 +47,19 @@ Commands:
   clean-prj           The command to clean up possible useless project references.
 ```
 
-## Why this project?
+## Overview
+
+### What is CommandFramework?
+
+<a name="why-this-project"></a>
 
 Command-line applications are a great way to automate repetitive tasks or even to be your own productivity tool. But building a command-line application in .NET is not easy. You need to parse the arguments, generate help pages, and so on. This project is designed to help you build a command-line application with just a few lines of code.
 
-## How to install
+## Installation
+
+Add the package to your .NET project:
+
+<a name="how-to-install"></a>
 
 Run the following command to install `Aiursoft.CommandFramework` to your project from [nuget.org](https://www.nuget.org/packages/Aiursoft.CommandFramework/):
 
@@ -57,7 +67,11 @@ Run the following command to install `Aiursoft.CommandFramework` to your project
 dotnet add package Aiursoft.CommandFramework
 ```
 
-## Learn step 1: How to build an executable command handler?
+Requires .NET 10 or later.
+
+## Usage
+
+<a name="learn-step-1-how-to-build-an-executable-command-handler"></a>
 
 To get started, create a new .NET console application:
 
@@ -100,7 +114,7 @@ public class DownloadHandler : ExecutableCommandHandlerBuilder
     protected override string Name => "download";
 
     protected override string Description => "Download an HTTP Url.";
-    
+
     protected override IEnumerable<Option> GetCommandOptions() => new Option[]
     {
         // Configure your options here.
@@ -148,7 +162,9 @@ $ your-downloader.exe --url https://www.aiursoft.com
 Downloading file from: https://www.aiursoft.com...
 ```
 
-## Learn step 2: How to test your command handler?
+### Learn step 2: How to test your command handler?
+
+<a name="learn-step-2-how-to-test-your-command-handler"></a>
 
 It it super simple to test a command handler.
 
@@ -203,7 +219,9 @@ Now write you UT, you can follow this practice:
 * Assert the result
 * Clean up the environment
 
-## Learn step 3: Understand single command app and nested command app
+### Learn step 3: Understand single command app and nested command app
+
+<a name="learn-step-3-understand-single-command-app-and-nested-command-app"></a>
 
 In the previous steps, we have learned how to build a single command app. A single command app is a command line tool that only has one command.
 
@@ -219,7 +237,9 @@ A nested command app is a command line tool that has multiple commands. like:
 
 * [Nuget Ninja](https://github.com/AiursoftWeb/nugetninja)
 
-## Learn step 4: How to build a nested command app?
+### Learn step 4: How to build a nested command app?
+
+<a name="learn-step-4-how-to-build-a-nested-command-app"></a>
 
 To do that, first you need to build several executable command handlers. And then wrap them with a `NavigationCommandHandlerBuilder`:
 
@@ -275,7 +295,9 @@ Now you can try:
 your-app network download --url https://www.aiursoft.com my_file.zip
 ```
 
-## Learn step 5: How to build a command app with dependency injection?
+### Learn step 5: How to build a command app with dependency injection?
+
+<a name="learn-step-5-how-to-build-a-command-app-with-dependency-injection"></a>
 
 It's easy to build a command app with dependency injection.
 
@@ -309,7 +331,7 @@ public class Startup : IStartUp
 {
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddHttpClient(nameof(Downloader)).ConfigurePrimaryHttpMessageHandler(() => 
+        services.AddHttpClient(nameof(Downloader)).ConfigurePrimaryHttpMessageHandler(() =>
         {
             return new HttpClientHandler()
             {
@@ -341,7 +363,7 @@ protected override async Task Execute(ParseResult parseResult)
             .Build();
 
   var downloader = host.Services.GetRequiredService<Downloader>(); // Get a service from dependency injection
-  
+
   string url = parseResult.GetValue(DownloadHandler.Url);
   string savePath = "./file";
   int blockSize = 4096;
@@ -353,7 +375,9 @@ protected override async Task Execute(ParseResult parseResult)
 
 That's it\!
 
-## Learn step 6: How to build and configure a background service?
+### Learn step 6: How to build and configure a background service?
+
+<a name="learn-step-6-how-to-build-and-configure-a-background-service"></a>
 
 You can even start a background service in your command line tool\!
 
@@ -383,13 +407,12 @@ public static class MyOptions
     public static readonly System.CommandLine.Option<string> _profile = new("--profile");
 }
 
-
 // In your `ExecutableCommandHandlerBuilder`:
 protected override async Task Execute(ParseResult parseResult)
 {
     var verbose = parseResult.GetValue(CommonOptionsProvider.VerboseOption);
     var profile = parseResult.GetValue(MyOptions._profile);
-    
+
     var host = ServiceBuilder
         .CreateCommandHostBuilder<Startup>(verbose)
         .ConfigureServices((hostBuilderContext, services)=>
@@ -409,7 +432,9 @@ protected override async Task Execute(ParseResult parseResult)
 
 To read more about how to write an `IHostedService`, please read [this doc](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/host/hosted-services) from Microsoft.
 
-## Learn step 7: How to display a progress bar?
+### Learn step 7: How to display a progress bar?
+
+<a name="learn-step-7-how-to-display-a-progress-bar"></a>
 
 It's simple. You can use the `ProgressBar` class from `Aiursoft.CommandFramework`:
 
@@ -445,7 +470,9 @@ That's it\! When running, you may see:
 [########################-----------------------]  50%
 ```
 
-## Learn step 8: Read more examples
+### Learn step 8: Read more examples
+
+<a name="learn-step-8-read-more-examples"></a>
 
 Explore these real projects built with this framework. Some applications combine nested commands with background services; the groups below highlight their main usage.
 
@@ -477,10 +504,40 @@ Background services:
 * [IPMI Controller](https://github.com/AiursoftWeb/ipmicontroller): Monitor hardware and control fans through IPMI.
 * [StatHub](https://github.com/AiursoftWeb/StatHub): Collect server statistics and report them to a StatHub server.
 
+## Configuration
+
+**Command definition**
+
+Declare options, required values, defaults and nested command names in the handler, as shown in Usage. `WithDefaultOption` selects the positional shorthand; it does not remove the required option's validation. The framework supplies help, version and verbose logging options.
+
+**Services and background applications**
+
+Use the dependency-injection and background-service tutorials for host registration and configuration. Configuration belongs to the consuming tool; there is no universal Controller URL, API Key or database configuration supplied by CommandFramework itself.
+
+## Development
+
+Install the [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0).
+
+From the repository root, restore, build and test:
+
+```bash
+dotnet restore Aiursoft.CommandFramework.sln
+dotnet build Aiursoft.CommandFramework.sln --no-restore
+dotnet test Aiursoft.CommandFramework.sln --no-restore
+```
+
+Run `./lint.sh` for the existing static checks.
+
 ## How to contribute
+
+<a name="how-to-contribute"></a>
 
 There are many ways to contribute to the project: logging bugs, submitting pull requests, reporting issues, and creating suggestions.
 
-Even if you with push rights on the repository, you should create a personal fork and create feature branches there when you need them. This keeps the main repository clean and your workflow cruft out of sight.
+Even if you have push rights on the repository, you should create a personal fork and create feature branches there when you need them. This keeps the main repository clean and your workflow cruft out of sight.
 
 We're also interested in your feedback on the future of this project. You can submit a suggestion or feature request through the issue tracker. To make this process more effective, we're asking that these include more information to help define them more clearly.
+
+## License
+
+Licensed under the [MIT License](https://github.com/AiursoftWeb/commandframework/blob/master/LICENSE).
